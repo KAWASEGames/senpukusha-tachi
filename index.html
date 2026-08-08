@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-product-title>潜伏者たち | 推理×神経衰弱のボードゲーム</title>
+  <meta name="description" content="見たカードを記憶し、相手の視線を読み、正体を暴く。推理と神経衰弱が交差する、少し不穏な2人用ボードゲーム。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="潜伏者たち">
+  <meta property="og:description" content="推理×神経衰弱。見つけるな、暴かれる前に。">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へ移動</a>
+
+  <header class="site-header" data-header>
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" data-config="title">潜伏者たち</a>
+      <nav class="nav-links" aria-label="ページ内ナビゲーション">
+        <a href="#concept">コンセプト</a>
+        <a href="#cards">カード</a>
+        <a href="#rules">遊び方</a>
+        <a href="#buy">購入</a>
+      </nav>
+      <a class="icon-link" href="#buy" aria-label="購入情報へ">
+        <span>購入</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="wrap hero-layout">
+        <div class="hero-copy reveal">
+          <p class="kicker">Memory / Deduction / Bluff</p>
+          <h1><span data-config="title">潜伏者たち</span></h1>
+          <p class="hero-lead">見たカードを記憶し、相手の沈黙を読み、潜伏した正体を暴く。</p>
+          <p class="hero-text">神経衰弱のわかりやすさに、推理とブラフの緊張感を重ねた2人用ボードゲーム。めくるたび、情報は増える。けれど、あなたの手がかりも相手に見られている。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#buy" data-buy-link>
+              <span data-config="ctaLabel">購入情報を見る</span>
+            </a>
+            <a class="button ghost" href="#rules">ルールを見る</a>
+          </div>
+          <dl class="quick-spec" aria-label="ゲーム概要">
+            <div><dt>人数</dt><dd data-config="players">2人</dd></div>
+            <div><dt>時間</dt><dd data-config="playTime">15-25分</dd></div>
+            <div><dt>年齢</dt><dd data-config="age">10歳以上</dd></div>
+          </dl>
+        </div>
+
+        <div class="hero-visual reveal" aria-label="商品イメージ">
+          <div class="product-shot" data-image-frame="product">
+            <div class="product-placeholder">
+              <span class="box-title" data-config="title">潜伏者たち</span>
+              <span class="box-mark">?</span>
+              <span class="box-copy">Are you human?</span>
+            </div>
+          </div>
+          <div class="signal-card card-a" aria-hidden="true">HUMAN</div>
+          <div class="signal-card card-b" aria-hidden="true">ALIEN</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section intro" id="concept">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">01 / Concept</p>
+          <h2>めくるだけでは、勝てない。</h2>
+          <p class="lead">同じ絵柄を探す記憶ゲーム。その裏側で、誰が何を知っているかを読み合う推理ゲーム。</p>
+        </div>
+
+        <div class="split-panels">
+          <article class="panel reveal">
+            <span class="panel-tag">Memory</span>
+            <h3>場所を覚える</h3>
+            <p>カードは裏向きに並びます。めくったカードの種類、場所、相手が見た情報を少しずつ積み上げていきます。</p>
+          </article>
+          <article class="panel reveal">
+            <span class="panel-tag">Deduction</span>
+            <h3>正体を読む</h3>
+            <p>相手が避けたカード、迷った手、あえて残した1枚。その行動すべてが、潜伏者の居場所を示す手がかりになります。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section cards-section" id="cards">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">02 / Cards</p>
+          <h2>情報は、表と裏を行き来する。</h2>
+          <p class="lead">カード画像は `script.js` のパスを書き換えるだけで差し替え可能。未設定時はLP用の仮カードが表示されます。</p>
+        </div>
+
+        <div class="card-showcase" data-card-gallery aria-label="カード例">
+          <article class="game-card reveal" data-card-id="alien">
+            <div class="card-face">
+              <span class="card-type">Alien</span>
+              <span class="card-symbol">?</span>
+              <strong>潜伏者</strong>
+            </div>
+          </article>
+          <article class="game-card reveal event-card" data-card-id="event">
+            <div class="card-face">
+              <span class="card-type">Event</span>
+              <span class="card-symbol">!</span>
+              <strong>撹乱</strong>
+            </div>
+          </article>
+          <article class="game-card reveal item-card" data-card-id="item">
+            <div class="card-face">
+              <span class="card-type">Item</span>
+              <span class="card-symbol">+</span>
+              <strong>証拠品</strong>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section rules" id="rules">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">03 / How To Play</p>
+          <h2>短い手番に、読み合いが詰まっている。</h2>
+        </div>
+
+        <ol class="steps">
+          <li class="step reveal">
+            <span>01</span>
+            <h3>カードを伏せて配置</h3>
+            <p>場にカードを裏向きで並べます。潜伏者、証拠品、撹乱カードが混ざり、最初は誰にも全体像が見えません。</p>
+          </li>
+          <li class="step reveal">
+            <span>02</span>
+            <h3>2枚をめくる</h3>
+            <p>自分の手番でカードを2枚選びます。揃えば得点、揃わなければその情報を記憶して次の推理につなげます。</p>
+          </li>
+          <li class="step reveal">
+            <span>03</span>
+            <h3>相手の行動を読む</h3>
+            <p>相手が覚えている場所、避けている場所、狙っている組み合わせを観察します。記憶力だけでなく、読みの精度が勝敗を分けます。</p>
+          </li>
+          <li class="step reveal">
+            <span>04</span>
+            <h3>正体を暴く</h3>
+            <p>潜伏者のペアを見つけるか、条件を満たして得点します。先に規定点へ到達したプレイヤーの勝利です。</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section tension">
+      <div class="wrap tension-layout">
+        <div class="reveal">
+          <p class="eyebrow">04 / Mind Game</p>
+          <h2>覚えているふりをする。忘れたふりをする。</h2>
+        </div>
+        <div class="tension-copy reveal">
+          <p>このゲームでは、正しい記憶を持っていること自体が情報になります。迷わずめくれば読まれる。迷いすぎても読まれる。カードの位置だけでなく、相手の呼吸まで盤面の一部になります。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section info" id="buy">
+      <div class="wrap">
+        <div class="buy-panel reveal">
+          <div>
+            <p class="eyebrow">Game Info</p>
+            <h2 data-config="title">潜伏者たち</h2>
+            <p class="lead">推理×神経衰弱の2人用ボードゲーム。</p>
+          </div>
+          <div class="price-box">
+            <span>販売価格</span>
+            <strong data-config="price">税込 2,800円</strong>
+            <a class="button primary wide" href="#" data-buy-link>
+              <span data-config="ctaLabel">購入情報を見る</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="spec-grid reveal">
+          <div><dt>プレイ人数</dt><dd data-config="players">2人</dd></div>
+          <div><dt>プレイ時間</dt><dd data-config="playTime">15-25分</dd></div>
+          <div><dt>対象年齢</dt><dd data-config="age">10歳以上</dd></div>
+          <div><dt>ジャンル</dt><dd>推理 / 記憶 / ブラフ</dd></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <small>&copy; <span data-year></span> <span data-config="title">潜伏者たち</span></small>
+      <a href="#top">ページ上部へ</a>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
