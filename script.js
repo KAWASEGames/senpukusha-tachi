@@ -7,6 +7,7 @@
   playTime: "15-20分",
   age: "8歳以上",
   images: {
+    product: "",
     cards: {
       alien: "",
       event: "",
@@ -47,6 +48,11 @@ const applyProductConfig = () => {
     const card = document.querySelector(`[data-card-id="${id}"]`);
     if (card) replaceWithImage(card, src, `${PRODUCT_CONFIG.title}の${id}カード`);
   });
+
+  if (PRODUCT_CONFIG.images.product) {
+    const product = document.querySelector("[data-product-id='box']");
+    if (product) replaceWithImage(product, PRODUCT_CONFIG.images.product, `${PRODUCT_CONFIG.title}の商品画像`);
+  }
 
   Object.entries(PRODUCT_CONFIG.images.qr).forEach(([id, src]) => {
     if (!src) return;
