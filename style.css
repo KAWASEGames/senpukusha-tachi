@@ -99,7 +99,7 @@ button {
 }
 
 .header-inner {
-  min-height: 48px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -107,7 +107,7 @@ button {
 }
 
 .brand {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -119,19 +119,19 @@ button {
 
 .nav-cta {
   display: inline-flex;
-  min-height: 32px;
+  min-height: 36px;
   align-items: center;
   justify-content: center;
-  padding: 0 14px;
+  padding: 0 16px;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   color: var(--ink);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
 }
 
 .hero {
-  min-height: calc(100svh - 48px);
+  min-height: calc(100svh - 56px);
   display: grid;
   align-items: center;
   padding: 48px 0 58px;
@@ -507,7 +507,7 @@ dd {
 .section {
   padding: 56px 0;
   border-bottom: 1px solid var(--line);
-  scroll-margin-top: 48px;
+  scroll-margin-top: 56px;
 }
 
 .section-rules {
@@ -981,7 +981,7 @@ dd {
     display: flex;
     gap: 24px;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .nav-cta {
