@@ -201,7 +201,7 @@ h4 {
 .type-card p,
 .effect-grid p,
 .faq-list p,
-.trial-box p,
+.shiyutaku-box p,
 .contact-list {
   color: var(--muted);
   font-size: 15px;
@@ -494,7 +494,7 @@ dd {
   color: var(--ink);
 }
 
-.section-trial {
+.section-shiyutaku {
   --ink: var(--paper-ink);
   --muted: var(--paper-muted);
   --dim: #6c7880;
@@ -574,7 +574,7 @@ dd {
 .card-types,
 .effect-list,
 .faq-list,
-.trial-box,
+.shiyutaku-box,
 .contact-panel {
   border-top: 1px solid var(--line);
   padding-top: 24px;
@@ -762,11 +762,20 @@ dd {
   margin: 10px 0 0;
 }
 
-.trial-box {
+.shiyutaku-box {
   color: var(--muted);
   padding: 22px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.42);
+}
+
+.shiyutaku-box .button {
+  margin-top: 18px;
+}
+
+.button-dark {
+  background: var(--paper-ink);
+  color: #fff;
 }
 
 .contact-panel {
@@ -909,7 +918,7 @@ dd {
   .type-card p,
   .effect-grid p,
   .faq-list p,
-  .trial-box p,
+  .shiyutaku-box p,
   .contact-list {
     font-size: 16px;
   }

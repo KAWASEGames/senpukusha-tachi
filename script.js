@@ -1,8 +1,8 @@
 ﻿const PRODUCT_CONFIG = {
   title: "潜伏者たち",
   price: "税込 2,800円",
-  buyUrl: "#trial",
-  ctaLabel: "試遊会を見る",
+  buyUrl: "https://shiyutaku.com/home",
+  ctaLabel: "試遊卓で遊ぶ",
   players: "2人",
   playTime: "15-20分",
   age: "8歳以上",
@@ -39,7 +39,7 @@ const applyProductConfig = () => {
   document.title = `${PRODUCT_CONFIG.title} | UNDERCOVER ALIENS`;
 
   document.querySelectorAll("[data-buy-link]").forEach((link) => {
-    link.href = PRODUCT_CONFIG.buyUrl || "#trial";
+    link.href = PRODUCT_CONFIG.buyUrl || "#shiyutaku";
   });
 
   Object.entries(PRODUCT_CONFIG.images.cards).forEach(([id, src]) => {
