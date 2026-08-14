@@ -13,6 +13,10 @@
   --pink: #c01665;
   --purple: #df2fff;
   --white: #ffffff;
+  --paper: #e9ece8;
+  --paper-soft: #dfe5e3;
+  --paper-ink: #101820;
+  --paper-muted: #4b5b65;
   --max: 1160px;
 }
 
@@ -454,12 +458,45 @@ dd {
   border-bottom: 1px solid var(--line);
 }
 
-.section-muted {
-  background: rgba(8, 23, 34, 0.42);
+.section-rules {
+  background:
+    linear-gradient(180deg, rgba(6, 17, 27, 0.92), rgba(8, 23, 34, 0.98)),
+    var(--panel);
+}
+
+.section-manual {
+  --ink: var(--paper-ink);
+  --muted: var(--paper-muted);
+  --dim: #6c7880;
+  --line: rgba(16, 24, 32, 0.18);
+  --line-strong: rgba(16, 24, 32, 0.34);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(223, 229, 227, 0.72)),
+    var(--paper);
+  color: var(--ink);
+}
+
+.section-faq {
+  --ink: #eef5f8;
+  --muted: #bdc9d1;
+  background:
+    linear-gradient(180deg, #0c1822, #07121b),
+    var(--panel-soft);
+}
+
+.section-trial {
+  background:
+    linear-gradient(135deg, rgba(192, 22, 101, 0.16), transparent 42%),
+    #06111a;
+}
+
+.section-contact {
+  background: #02070c;
 }
 
 .section-title {
-  margin-bottom: 28px;
+  margin-bottom: 30px;
+  max-width: 720px;
 }
 
 .section-title p {
@@ -479,6 +516,7 @@ dd {
     #07131d;
   color: var(--ink);
   cursor: pointer;
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.22);
 }
 
 .play-circle {
@@ -520,11 +558,18 @@ dd {
   padding-top: 24px;
 }
 
+.rule-block,
+.quick-flow {
+  padding: 22px;
+  border: 1px solid rgba(196, 213, 228, 0.18);
+  background: rgba(255, 255, 255, 0.025);
+}
+
 .rule-block + .quick-flow,
 .quick-flow + .rule-block,
 .card-types + .effect-list,
 .effect-list + .effect-list {
-  margin-top: 36px;
+  margin-top: 24px;
 }
 
 .rule-heading {
@@ -569,7 +614,7 @@ dd {
   min-height: 160px;
   padding: 18px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.018);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .flow-grid span {
@@ -588,8 +633,9 @@ dd {
   grid-template-columns: 70px 1fr;
   gap: 16px;
   align-items: center;
-  padding: 14px 0;
-  border-bottom: 1px solid rgba(196, 213, 228, 0.13);
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.38);
 }
 
 .type-card h4,
@@ -637,6 +683,12 @@ dd {
   border-bottom: 1px solid var(--line);
 }
 
+.effect-list {
+  padding: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.34);
+}
+
 .effect-grid p {
   display: grid;
   grid-template-columns: 18px 1fr;
@@ -667,11 +719,14 @@ dd {
 .faq-list {
   display: grid;
   gap: 12px;
+  border-top: 0;
+  padding-top: 0;
 }
 
 .faq-list details {
-  border-bottom: 1px solid rgba(196, 213, 228, 0.14);
-  padding-bottom: 12px;
+  border: 1px solid rgba(196, 213, 228, 0.18);
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.035);
 }
 
 .faq-list summary {
@@ -687,11 +742,17 @@ dd {
 
 .trial-box {
   color: var(--muted);
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.035);
 }
 
 .contact-panel {
   display: grid;
   gap: 28px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .contact-list {
@@ -738,8 +799,8 @@ dd {
 }
 
 .reveal {
-  opacity: 0;
-  transform: translateY(12px);
+  opacity: 0.72;
+  transform: translateY(8px);
   transition: opacity 520ms ease, transform 520ms ease;
 }
 
