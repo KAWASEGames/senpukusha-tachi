@@ -1,191 +1,273 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title data-product-title>潜伏者たち | 推理×神経衰弱のボードゲーム</title>
-  <meta name="description" content="見たカードを記憶し、相手の視線を読み、正体を暴く。推理と神経衰弱が交差する、少し不穏な2人用ボードゲーム。">
+  <title>潜伏者たち | UNDERCOVER ALIENS</title>
+  <meta name="description" content="記憶する。読む。正体を暴く。推理と神経衰弱が交差する2人用カードゲーム「潜伏者たち」の公式ページ。">
   <meta property="og:type" content="website">
   <meta property="og:title" content="潜伏者たち">
-  <meta property="og:description" content="推理×神経衰弱。見つけるな、暴かれる前に。">
+  <meta property="og:description" content="推理と神経衰弱が交差する2人用カードゲーム。">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
 
-  <header class="site-header" data-header>
+  <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="#top" data-config="title">潜伏者たち</a>
       <nav class="nav-links" aria-label="ページ内ナビゲーション">
-        <a href="#concept">コンセプト</a>
+        <a href="#howto">遊び方</a>
         <a href="#cards">カード</a>
-        <a href="#rules">遊び方</a>
-        <a href="#buy">購入</a>
+        <a href="#faq">Q&A</a>
+        <a href="#trial">試遊会</a>
+        <a href="#contact">お問い合わせ</a>
       </nav>
-      <a class="icon-link" href="#buy" aria-label="購入情報へ">
-        <span>購入</span>
-      </a>
+      <a class="nav-cta" href="#howto">遊び方</a>
     </div>
   </header>
 
   <main id="main">
     <section class="hero" id="top">
-      <div class="wrap hero-layout">
+      <div class="wrap hero-grid">
         <div class="hero-copy reveal">
-          <p class="kicker">Memory / Deduction / Bluff</p>
-          <h1><span data-config="title">潜伏者たち</span></h1>
-          <p class="hero-lead">見たカードを記憶し、相手の沈黙を読み、潜伏した正体を暴く。</p>
-          <p class="hero-text">神経衰弱のわかりやすさに、推理とブラフの緊張感を重ねた2人用ボードゲーム。めくるたび、情報は増える。けれど、あなたの手がかりも相手に見られている。</p>
-          <div class="hero-actions">
-            <a class="button primary" href="#buy" data-buy-link>
-              <span data-config="ctaLabel">購入情報を見る</span>
-            </a>
-            <a class="button ghost" href="#rules">ルールを見る</a>
-          </div>
-          <dl class="quick-spec" aria-label="ゲーム概要">
+          <p class="eyebrow">UNDERCOVER ALIENS</p>
+          <h1 data-config="title">潜伏者たち</h1>
+          <p class="hero-lead">記憶する。読む。正体を暴く。</p>
+          <p class="hero-text">めくったカードの位置を覚えながら、相手が見た情報と行動を読み合う、推理×神経衰弱の2人用カードゲームです。</p>
+          <dl class="spec-strip" aria-label="ゲーム概要">
             <div><dt>人数</dt><dd data-config="players">2人</dd></div>
-            <div><dt>時間</dt><dd data-config="playTime">15-25分</dd></div>
-            <div><dt>年齢</dt><dd data-config="age">10歳以上</dd></div>
+            <div><dt>時間</dt><dd data-config="playTime">15-20分</dd></div>
+            <div><dt>対象</dt><dd data-config="age">8歳以上</dd></div>
           </dl>
-        </div>
-
-        <div class="hero-visual reveal" aria-label="商品イメージ">
-          <div class="product-shot" data-image-frame="product">
-            <div class="product-placeholder">
-              <span class="box-title" data-config="title">潜伏者たち</span>
-              <span class="box-mark">?</span>
-              <span class="box-copy">Are you human?</span>
-            </div>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#howto">遊び方</a>
+            <a class="button button-secondary" href="#trial">試遊会</a>
           </div>
-          <div class="signal-card card-a" aria-hidden="true">HUMAN</div>
-          <div class="signal-card card-b" aria-hidden="true">ALIEN</div>
+        </div>
+
+        <div class="hero-art reveal" aria-label="カードイメージ">
+          <div class="floating-card card-eye" data-card-id="event">
+            <span class="card-icon eye-icon"></span>
+            <small>EVENT</small>
+          </div>
+          <div class="floating-card card-item" data-card-id="item">
+            <span class="card-icon warning-icon"></span>
+            <small>ITEM</small>
+          </div>
+          <div class="floating-card card-alien" data-card-id="alien">
+            <span class="alien-shape"></span>
+            <small>ALIEN</small>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section intro" id="concept">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <p class="eyebrow">01 / Concept</p>
-          <h2>めくるだけでは、勝てない。</h2>
-          <p class="lead">同じ絵柄を探す記憶ゲーム。その裏側で、誰が何を知っているかを読み合う推理ゲーム。</p>
+    <section class="section" id="howto">
+      <div class="wrap narrow">
+        <div class="section-title reveal">
+          <h2>遊び方</h2>
         </div>
 
-        <div class="split-panels">
-          <article class="panel reveal">
-            <span class="panel-tag">Memory</span>
-            <h3>場所を覚える</h3>
-            <p>カードは裏向きに並びます。めくったカードの種類、場所、相手が見た情報を少しずつ積み上げていきます。</p>
-          </article>
-          <article class="panel reveal">
-            <span class="panel-tag">Deduction</span>
-            <h3>正体を読む</h3>
-            <p>相手が避けたカード、迷った手、あえて残した1枚。その行動すべてが、潜伏者の居場所を示す手がかりになります。</p>
-          </article>
+        <button class="video-card reveal" type="button" data-video-button aria-label="遊び方動画を再生">
+          <span class="play-circle"></span>
+          <span class="video-label">HOW TO PLAY</span>
+        </button>
+
+        <section class="rule-block reveal">
+          <div class="rule-heading">
+            <p class="eyebrow">Setup</p>
+            <h3>ゲームの準備</h3>
+          </div>
+          <ol class="rule-list">
+            <li>
+              <h4>エイリアンカードを配る</h4>
+              <p>各プレイヤーに、同じ種類のエイリアンカードを3枚ずつ配ります。</p>
+            </li>
+            <li>
+              <h4>場札を準備する</h4>
+              <p>イベントカード、アイテムカード、はずれカードを混ぜ、裏向きで場に並べます。</p>
+            </li>
+            <li>
+              <h4>エイリアンカードを隠す</h4>
+              <p>自分のエイリアンカードを、場のカードに混ぜて裏向きで配置します。どこに置いたかを覚えておきましょう。</p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="quick-flow reveal">
+          <p class="eyebrow">3 Steps</p>
+          <div class="flow-grid">
+            <article>
+              <span>01</span>
+              <h3>2枚めくる</h3>
+              <p>場からカードを2枚選び、全員に見えるように表にします。</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>効果を使う</h3>
+              <p>カードが揃ったら得点。イベントやアイテムなら追加効果を処理します。</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>正体を暴く</h3>
+              <p>相手のエイリアンを見つけると大きな得点。先に規定点で勝利です。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="rule-block reveal">
+          <div class="rule-heading">
+            <p class="eyebrow">Turn</p>
+            <h3>ゲームの流れ</h3>
+          </div>
+          <ol class="rule-list">
+            <li>
+              <h4>場のカードを2枚めくる</h4>
+              <p>自分のターンに場からカードを2枚めくります。相手がどのカードを覚えたかも、重要な情報になります。</p>
+            </li>
+            <li>
+              <h4>メインカードを使う</h4>
+              <p>エイリアンやイベントなど、めくった組み合わせに応じて得点や効果を処理します。</p>
+            </li>
+            <li>
+              <h4>得点と勝利条件</h4>
+              <p>同じカードを揃える、相手のエイリアンを見つけるなどで得点します。先に規定点へ到達したプレイヤーの勝利です。</p>
+            </li>
+          </ol>
+        </section>
+      </div>
+    </section>
+
+    <section class="section section-muted" id="cards">
+      <div class="wrap narrow">
+        <div class="section-title reveal">
+          <h2>カードについて</h2>
+        </div>
+
+        <section class="card-types reveal">
+          <h3>カードの種類</h3>
+          <div class="type-grid">
+            <article class="type-card">
+              <span class="mini-card"><span class="eye-icon"></span></span>
+              <div>
+                <h4>イベントカード</h4>
+                <p>めくった瞬間に情報や盤面を動かすカード。</p>
+                <small>6タイプ</small>
+              </div>
+            </article>
+            <article class="type-card">
+              <span class="mini-card"><span class="hazure-icon"></span></span>
+              <div>
+                <h4>はずれカード</h4>
+                <p>ペアにならない、記憶を揺らすカード。</p>
+                <small>7タイプ</small>
+              </div>
+            </article>
+            <article class="type-card">
+              <span class="mini-card"><span class="warning-icon"></span></span>
+              <div>
+                <h4>アイテムカード</h4>
+                <p>条件が揃うと強い効果を発揮するカード。</p>
+                <small>2タイプ</small>
+              </div>
+            </article>
+            <article class="type-card alien-type">
+              <span class="mini-card"><span class="alien-shape"></span></span>
+              <div>
+                <h4>エイリアンカード</h4>
+                <p>相手に見つかると得点される、正体のカード。</p>
+                <small>3タイプ</small>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="effect-list reveal">
+          <h3>イベントカード一覧</h3>
+          <div class="effect-grid">
+            <p><span class="dot blue"></span>相手のカードを確認する</p>
+            <p><span class="dot cyan"></span>場のカードを入れ替える</p>
+            <p><span class="dot blue"></span>追加で1枚めくる</p>
+            <p><span class="dot cyan"></span>相手の手番を制限する</p>
+            <p><span class="dot blue"></span>公開情報を増やす</p>
+            <p><span class="dot cyan"></span>捨て札を確認する</p>
+          </div>
+        </section>
+
+        <section class="effect-list reveal">
+          <h3>アイテムカード一覧</h3>
+          <div class="effect-grid">
+            <p><span class="dot yellow"></span>直前の情報を守る</p>
+            <p><span class="dot yellow"></span>場札を一部見直す</p>
+            <p><span class="dot yellow"></span>得点条件を補助する</p>
+            <p><span class="dot yellow"></span>相手の推理を妨害する</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="wrap narrow">
+        <div class="section-title reveal">
+          <h2>よくある質問</h2>
+          <p>よくある質問をまとめました。</p>
+        </div>
+
+        <div class="faq-list reveal">
+          <details open>
+            <summary>シャッフルはいつできますか？</summary>
+            <p>効果によって指定されたタイミングで行います。カードをめくっている途中や、効果処理中に自由に混ぜることはできません。</p>
+          </details>
+          <details>
+            <summary>場のカードを覚えてもいいですか？</summary>
+            <p>はい。場にあるカードの位置、相手の見たカード、戻された場所を覚えることがゲームの中心です。</p>
+          </details>
+          <details>
+            <summary>異なるプレイヤーのエイリアンカードを揃えた場合は？</summary>
+            <p>相手のエイリアンを見つけた場合、通常より大きな得点になります。自分の正体を見つけられないように動きましょう。</p>
+          </details>
+          <details>
+            <summary>同じカードを揃えた場合、そのカードは場からなくなりますか？</summary>
+            <p>基本的には得点後に場から取り除きます。カードごとの効果に例外がある場合は、その効果を優先します。</p>
+          </details>
         </div>
       </div>
     </section>
 
-    <section class="section cards-section" id="cards">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <p class="eyebrow">02 / Cards</p>
-          <h2>情報は、表と裏を行き来する。</h2>
-          <p class="lead">カード画像は `script.js` のパスを書き換えるだけで差し替え可能。未設定時はLP用の仮カードが表示されます。</p>
+    <section class="section trial" id="trial">
+      <div class="wrap narrow">
+        <div class="section-title reveal">
+          <h2>試遊会</h2>
+          <p>試遊予定・販売予定が決まり次第、こちらに掲載します。</p>
         </div>
-
-        <div class="card-showcase" data-card-gallery aria-label="カード例">
-          <article class="game-card reveal" data-card-id="alien">
-            <div class="card-face">
-              <span class="card-type">Alien</span>
-              <span class="card-symbol">?</span>
-              <strong>潜伏者</strong>
-            </div>
-          </article>
-          <article class="game-card reveal event-card" data-card-id="event">
-            <div class="card-face">
-              <span class="card-type">Event</span>
-              <span class="card-symbol">!</span>
-              <strong>撹乱</strong>
-            </div>
-          </article>
-          <article class="game-card reveal item-card" data-card-id="item">
-            <div class="card-face">
-              <span class="card-type">Item</span>
-              <span class="card-symbol">+</span>
-              <strong>証拠品</strong>
-            </div>
-          </article>
+        <div class="trial-box reveal">
+          <p class="eyebrow">Next Event</p>
+          <p>現在準備中です。最新情報はXまたはYouTubeでお知らせします。</p>
         </div>
       </div>
     </section>
 
-    <section class="section rules" id="rules">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <p class="eyebrow">03 / How To Play</p>
-          <h2>短い手番に、読み合いが詰まっている。</h2>
+    <section class="section contact" id="contact">
+      <div class="wrap narrow">
+        <div class="section-title reveal">
+          <h2>問い合わせ</h2>
         </div>
-
-        <ol class="steps">
-          <li class="step reveal">
-            <span>01</span>
-            <h3>カードを伏せて配置</h3>
-            <p>場にカードを裏向きで並べます。潜伏者、証拠品、撹乱カードが混ざり、最初は誰にも全体像が見えません。</p>
-          </li>
-          <li class="step reveal">
-            <span>02</span>
-            <h3>2枚をめくる</h3>
-            <p>自分の手番でカードを2枚選びます。揃えば得点、揃わなければその情報を記憶して次の推理につなげます。</p>
-          </li>
-          <li class="step reveal">
-            <span>03</span>
-            <h3>相手の行動を読む</h3>
-            <p>相手が覚えている場所、避けている場所、狙っている組み合わせを観察します。記憶力だけでなく、読みの精度が勝敗を分けます。</p>
-          </li>
-          <li class="step reveal">
-            <span>04</span>
-            <h3>正体を暴く</h3>
-            <p>潜伏者のペアを見つけるか、条件を満たして得点します。先に規定点へ到達したプレイヤーの勝利です。</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <section class="section tension">
-      <div class="wrap tension-layout">
-        <div class="reveal">
-          <p class="eyebrow">04 / Mind Game</p>
-          <h2>覚えているふりをする。忘れたふりをする。</h2>
-        </div>
-        <div class="tension-copy reveal">
-          <p>このゲームでは、正しい記憶を持っていること自体が情報になります。迷わずめくれば読まれる。迷いすぎても読まれる。カードの位置だけでなく、相手の呼吸まで盤面の一部になります。</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section info" id="buy">
-      <div class="wrap">
-        <div class="buy-panel reveal">
+        <div class="contact-panel reveal">
           <div>
-            <p class="eyebrow">Game Info</p>
-            <h2 data-config="title">潜伏者たち</h2>
-            <p class="lead">推理×神経衰弱の2人用ボードゲーム。</p>
+            <h3>試遊・委託・取材などはこちら</h3>
+            <ul class="contact-list">
+              <li>E-mail：<a href="mailto:kawasegames@gmail.com">kawasegames@gmail.com</a></li>
+              <li>Web：<a href="https://kawasegames.github.io/senpukusha-tachi/">kawasegames.github.io/senpukusha-tachi/</a></li>
+              <li>YouTube：<a href="https://www.youtube.com/@KAWASEgames-hi7">youtube.com/@KAWASEgames-hi7</a></li>
+              <li>X：<a href="https://x.com/kawasegames">x.com/kawasegames</a></li>
+            </ul>
           </div>
-          <div class="price-box">
-            <span>販売価格</span>
-            <strong data-config="price">税込 2,800円</strong>
-            <a class="button primary wide" href="#" data-buy-link>
-              <span data-config="ctaLabel">購入情報を見る</span>
-            </a>
+          <div class="qr-row" aria-label="QRコード差し替え領域">
+            <div class="qr-placeholder" data-qr-id="web">WEB</div>
+            <div class="qr-placeholder" data-qr-id="youtube">YT</div>
           </div>
-        </div>
-
-        <div class="spec-grid reveal">
-          <div><dt>プレイ人数</dt><dd data-config="players">2人</dd></div>
-          <div><dt>プレイ時間</dt><dd data-config="playTime">15-25分</dd></div>
-          <div><dt>対象年齢</dt><dd data-config="age">10歳以上</dd></div>
-          <div><dt>ジャンル</dt><dd>推理 / 記憶 / ブラフ</dd></div>
         </div>
       </div>
     </section>
@@ -198,6 +280,6 @@
     </div>
   </footer>
 
-  <script src="./script.js"></script>
+  <script src="./script.js" charset="utf-8"></script>
 </body>
 </html>

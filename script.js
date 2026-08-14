@@ -1,19 +1,23 @@
-const PRODUCT_CONFIG = {
+﻿const PRODUCT_CONFIG = {
   title: "潜伏者たち",
   price: "税込 2,800円",
-  buyUrl: "#buy",
-  ctaLabel: "販売リンク準備中",
+  buyUrl: "#trial",
+  ctaLabel: "試遊会を見る",
   players: "2人",
-  playTime: "15-25分",
-  age: "10歳以上",
+  playTime: "15-20分",
+  age: "8歳以上",
   images: {
-    product: "",
     cards: {
       alien: "",
       event: "",
       item: ""
+    },
+    qr: {
+      web: "",
+      youtube: ""
     }
-  }
+  },
+  videoUrl: ""
 };
 
 const setText = (key, value) => {
@@ -22,33 +26,40 @@ const setText = (key, value) => {
   });
 };
 
+const replaceWithImage = (element, src, alt) => {
+  element.classList.add("has-image");
+  element.innerHTML = `<img src="${src}" alt="${alt}">`;
+};
+
 const applyProductConfig = () => {
   Object.entries(PRODUCT_CONFIG).forEach(([key, value]) => {
-    if (typeof value === "string") {
-      setText(key, value);
-    }
+    if (typeof value === "string") setText(key, value);
   });
 
-  document.title = `${PRODUCT_CONFIG.title} | 推理×神経衰弱のボードゲーム`;
+  document.title = `${PRODUCT_CONFIG.title} | UNDERCOVER ALIENS`;
+
   document.querySelectorAll("[data-buy-link]").forEach((link) => {
-    link.href = PRODUCT_CONFIG.buyUrl || "#buy";
+    link.href = PRODUCT_CONFIG.buyUrl || "#trial";
   });
-
-  const productFrame = document.querySelector('[data-image-frame="product"]');
-  if (productFrame && PRODUCT_CONFIG.images.product) {
-    productFrame.classList.add("has-image");
-    productFrame.innerHTML = `<img src="${PRODUCT_CONFIG.images.product}" alt="${PRODUCT_CONFIG.title}の商品画像">`;
-  }
 
   Object.entries(PRODUCT_CONFIG.images.cards).forEach(([id, src]) => {
     if (!src) return;
-
     const card = document.querySelector(`[data-card-id="${id}"]`);
-    if (!card) return;
-
-    card.classList.add("has-image");
-    card.innerHTML = `<img src="${src}" alt="${PRODUCT_CONFIG.title}の${id}カード画像">`;
+    if (card) replaceWithImage(card, src, `${PRODUCT_CONFIG.title}の${id}カード`);
   });
+
+  Object.entries(PRODUCT_CONFIG.images.qr).forEach(([id, src]) => {
+    if (!src) return;
+    const qr = document.querySelector(`[data-qr-id="${id}"]`);
+    if (qr) replaceWithImage(qr, `${src}`, `${id}のQRコード`);
+  });
+
+  const videoButton = document.querySelector("[data-video-button]");
+  if (videoButton && PRODUCT_CONFIG.videoUrl) {
+    videoButton.addEventListener("click", () => {
+      window.open(PRODUCT_CONFIG.videoUrl, "_blank", "noopener");
+    });
+  }
 };
 
 const revealOnScroll = () => {
@@ -62,13 +73,12 @@ const revealOnScroll = () => {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
       });
     },
-    { threshold: 0.16 }
+    { threshold: 0.14 }
   );
 
   targets.forEach((target) => observer.observe(target));
