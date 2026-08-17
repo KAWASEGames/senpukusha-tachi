@@ -309,16 +309,16 @@ dd {
   min-height: 330px;
   overflow: hidden;
   display: grid;
-  place-items: center;
+  place-items: start center;
 }
 
 .hero-art-image {
   display: block;
-  width: min(200%, 860px);
+  width: min(100%, 430px);
   max-width: none;
   height: auto;
   object-fit: contain;
-  transform: translate(-5%, -12%);
+  transform: none;
   filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.34));
 }
 
@@ -911,8 +911,8 @@ dd {
   }
 
   .hero-art-image {
-    width: min(92vw, 1120px);
-    transform: translate(-5%, -6%);
+    width: min(46vw, 560px);
+    transform: none;
   }
 
   .flow-grid {
