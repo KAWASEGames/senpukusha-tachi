@@ -3,9 +3,9 @@
   price: "税込 2,800円",
   buyUrl: "https://shiyutaku.com/home",
   ctaLabel: "試遊卓で遊ぶ",
-  players: "2人",
+  players: "2〜4人",
   playTime: "15-20分",
-  age: "8歳以上",
+  age: "6歳以上",
   images: {
     cards: {
       alien: "",

@@ -616,15 +616,10 @@ dd {
   padding-top: 24px;
 }
 
-.rule-block,
-.quick-flow {
-  padding: 22px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.38);
+.rule-block {
+  padding-top: 28px;
 }
 
-.rule-block + .quick-flow,
-.quick-flow + .rule-block,
 .card-types + .effect-list,
 .effect-list + .effect-list {
   margin-top: 24px;
@@ -639,19 +634,20 @@ dd {
   padding-left: 0;
   list-style: none;
   display: grid;
-  gap: 22px;
+  gap: 0;
 }
 
 .rule-list li {
-  padding-left: 34px;
+  padding: 20px 0 20px 34px;
   position: relative;
+  border-bottom: 1px solid var(--line);
 }
 
 .rule-list li::before {
   content: counter(list-item, decimal-leading-zero);
   position: absolute;
   left: 0;
-  top: 0;
+  top: 20px;
   color: var(--ink);
   font-size: 13px;
   font-weight: 800;
