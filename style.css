@@ -312,8 +312,11 @@ dd {
 }
 
 .hero-art-image {
-  width: min(100%, 430px);
+  display: block;
+  max-width: min(100%, 430px);
+  width: auto;
   height: auto;
+  object-fit: contain;
   filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.34));
 }
 
@@ -908,7 +911,7 @@ dd {
   }
 
   .hero-art-image {
-    width: min(46vw, 560px);
+    max-width: min(46vw, 560px);
   }
 
   .flow-grid {
