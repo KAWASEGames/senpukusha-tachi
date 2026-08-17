@@ -111,7 +111,7 @@ button {
 }
 
 .header-inner {
-  min-height: 48px;
+  min-height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -119,7 +119,7 @@ button {
 }
 
 .brand {
-  font-size: 13px;
+  font-size: 26px;
   font-weight: 800;
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -131,14 +131,14 @@ button {
 
 .nav-cta {
   display: inline-flex;
-  min-height: 32px;
+  min-height: 48px;
   align-items: center;
   justify-content: center;
-  padding: 0 14px;
+  padding: 0 20px;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   color: var(--ink);
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 800;
 }
 
@@ -305,7 +305,8 @@ dd {
 
 .hero-art {
   position: relative;
-  min-height: 290px;
+  height: 330px;
+  min-height: 330px;
   overflow: hidden;
   display: grid;
   place-items: center;
@@ -313,8 +314,8 @@ dd {
 
 .hero-art-image {
   display: block;
-  max-width: min(100%, 430px);
-  width: auto;
+  width: min(200%, 860px);
+  max-width: none;
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.34));
@@ -888,9 +889,10 @@ dd {
 @media (min-width: 680px) {
   .nav-links {
     display: flex;
-    gap: 24px;
+    gap: 30px;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 16px;
+    font-weight: 700;
   }
 
   .nav-cta {
@@ -903,11 +905,12 @@ dd {
   }
 
   .hero-art {
-    min-height: 430px;
+    height: 500px;
+    min-height: 500px;
   }
 
   .hero-art-image {
-    max-width: min(46vw, 560px);
+    width: min(92vw, 1120px);
   }
 
   .flow-grid {
