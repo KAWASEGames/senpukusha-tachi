@@ -34,7 +34,7 @@ body {
     radial-gradient(circle at 72% 6%, rgba(16, 167, 255, 0.11), transparent 28rem),
     linear-gradient(180deg, #020912 0%, var(--bg) 42%, #01070d 100%);
   color: var(--ink);
-  font-family: Inter, "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+  font-family: "FOT-筑紫A丸ゴシック Std", "TsukuARdGothicStd", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
   line-height: 1.8;
   overflow-x: hidden;
 }
