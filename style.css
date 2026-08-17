@@ -305,9 +305,8 @@ dd {
 
 .hero-art {
   position: relative;
-  height: 330px;
-  min-height: 330px;
-  overflow: hidden;
+  min-height: 0;
+  overflow: visible;
   display: grid;
   place-items: start center;
 }
@@ -906,12 +905,11 @@ dd {
   }
 
   .hero-art {
-    height: 500px;
-    min-height: 500px;
+    min-height: 0;
   }
 
   .hero-art-image {
-    width: min(46vw, 560px);
+    width: min(38vw, 500px);
     transform: none;
   }
 
