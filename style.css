@@ -20,35 +20,6 @@
   --max: 1160px;
 }
 
-@font-face {
-  font-family: "SenpukushaTsukushi";
-  src:
-    local("FOT-筑紫A丸ゴシック Std R"),
-    local("FOT-筑紫A丸ゴシック Std"),
-    local("FOT-TsukuARdGothic Std R"),
-    local("FOT-TsukuARdGothic Std"),
-    local("TsukuARdGothicStd-R"),
-    local("TsukuARdGothicStd"),
-    local("Tsukushi A Round Gothic");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "SenpukushaTsukushi";
-  src:
-    local("FOT-筑紫A丸ゴシック Std B"),
-    local("FOT-TsukuARdGothic Std B"),
-    local("TsukuARdGothicStd-B"),
-    local("FOT-筑紫A丸ゴシック Std R"),
-    local("FOT-筑紫A丸ゴシック Std"),
-    local("Tsukushi A Round Gothic");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -63,7 +34,7 @@ body {
     radial-gradient(circle at 72% 6%, rgba(16, 167, 255, 0.11), transparent 28rem),
     linear-gradient(180deg, #020912 0%, var(--bg) 42%, #01070d 100%);
   color: var(--ink);
-  font-family: "SenpukushaTsukushi", "FOT-筑紫A丸ゴシック Std R", "FOT-筑紫A丸ゴシック Std", "TsukuARdGothicStd", "Tsukushi A Round Gothic", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+  font-family: "Zen Maru Gothic", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
   line-height: 1.8;
   overflow-x: hidden;
 }
