@@ -180,10 +180,17 @@ h1 {
   letter-spacing: 0;
 }
 
-.hero-title-image {
+.hero-title-frame {
   width: min(100%, 560px);
-  height: auto;
+  aspect-ratio: 792 / 285;
+  overflow: hidden;
   margin: 0 0 18px;
+}
+
+.hero-title-image {
+  width: 100%;
+  height: auto;
+  transform: translateY(-24%);
 }
 
 h2 {
@@ -300,6 +307,14 @@ dd {
   position: relative;
   min-height: 290px;
   overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.hero-art-image {
+  width: min(100%, 430px);
+  height: auto;
+  filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.34));
 }
 
 .floating-card {
@@ -890,6 +905,10 @@ dd {
 
   .hero-art {
     min-height: 430px;
+  }
+
+  .hero-art-image {
+    width: min(46vw, 560px);
   }
 
   .flow-grid {
