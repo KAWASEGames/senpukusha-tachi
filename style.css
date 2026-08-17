@@ -182,15 +182,15 @@ h1 {
 
 .hero-title-frame {
   width: min(100%, 560px);
-  aspect-ratio: 792 / 285;
+  aspect-ratio: 700 / 285;
   overflow: hidden;
   margin: 0 0 18px;
 }
 
 .hero-title-image {
-  width: 100%;
+  width: 113.2%;
   height: auto;
-  transform: translateY(-24%);
+  transform: translate(-7.6%, -24%);
 }
 
 h2 {
