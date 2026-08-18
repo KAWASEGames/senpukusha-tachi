@@ -146,7 +146,7 @@ button {
   min-height: auto;
   display: grid;
   align-items: start;
-  padding: 18px 0 54px;
+  padding: 306px 0 54px;
   border-bottom: 1px solid var(--line);
   overflow: hidden;
 }
@@ -1030,7 +1030,7 @@ dd {
   }
 
   .hero {
-    padding: 18px 0 64px;
+    padding: 306px 0 64px;
   }
 
   .section {
