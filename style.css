@@ -1178,6 +1178,13 @@ dd {
   flex-wrap: wrap;
 }
 
+.contact-qr {
+  width: 132px;
+  height: auto;
+  border: 7px solid var(--white);
+  background: var(--white);
+}
+
 .qr-placeholder {
   width: 96px;
   aspect-ratio: 1;
