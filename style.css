@@ -119,10 +119,15 @@ button {
 }
 
 .brand {
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
+  width: clamp(158px, 36vw, 220px);
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.header-logo {
+  width: 100%;
+  height: auto;
 }
 
 .nav-links {
@@ -710,12 +715,6 @@ dd {
 
 .rule-heading {
   margin-bottom: 18px;
-}
-
-.rule-heading-flow {
-  margin-top: 34px;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
 }
 
 .rule-list {
