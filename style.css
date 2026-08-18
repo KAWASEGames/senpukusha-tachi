@@ -712,6 +712,12 @@ dd {
   margin-bottom: 18px;
 }
 
+.rule-heading-flow {
+  margin-top: 34px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
 .rule-list {
   margin: 0;
   padding-left: 0;
@@ -738,6 +744,14 @@ dd {
 
 .rule-list p {
   margin-bottom: 0;
+}
+
+.rule-list p + p {
+  margin-top: 10px;
+}
+
+.rule-note {
+  color: var(--dim);
 }
 
 .flow-grid,
