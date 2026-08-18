@@ -971,7 +971,7 @@ dd {
 @media (min-width: 680px) {
   .nav-links {
     display: flex;
-    gap: 30px;
+    gap: 42px;
     color: var(--muted);
     font-size: 20px;
     font-weight: 700;
