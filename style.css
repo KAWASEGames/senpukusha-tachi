@@ -1022,7 +1022,7 @@ dd {
 
 @media (min-width: 980px) {
   .wrap {
-    width: min(1220px, calc(100% - 24px));
+    width: min(1660px, calc(100% - 24px));
   }
 
   .narrow {
