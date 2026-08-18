@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=20260818-23">
+  <link rel="stylesheet" href="./style.css?v=20260818-24">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -66,10 +66,40 @@
           <h2>遊び方</h2>
         </div>
 
-        <button class="video-card reveal" type="button" data-video-button aria-label="遊び方動画を再生">
-          <span class="play-circle"></span>
-          <span class="video-label">HOW TO PLAY</span>
-        </button>
+        <section class="howto-video reveal" data-howto-video aria-label="遊び方動画">
+          <div class="movie-screen">
+            <div class="movie-stage" aria-hidden="true">
+              <img class="movie-title-image" src="./素材/タイトル.png" alt="" width="792" height="489">
+              <img class="movie-box-image" src="./素材/はこ-hero.png" alt="" width="1839" height="2798">
+              <div class="movie-board">
+                <span class="movie-card movie-card-back card-a"></span>
+                <span class="movie-card movie-card-back card-b"></span>
+                <span class="movie-card movie-card-back card-c"></span>
+                <span class="movie-card movie-card-back card-d"></span>
+                <span class="movie-card movie-card-back card-e"></span>
+                <span class="movie-card movie-card-back card-f"></span>
+                <img class="movie-card movie-card-face card-g" src="./素材/001-card-front.png" alt="" width="816" height="1112">
+                <img class="movie-card movie-card-face card-h" src="./素材/001-card-front.png" alt="" width="816" height="1112">
+                <img class="movie-card movie-card-face card-i" src="./素材/001-E-card-front.png" alt="" width="816" height="1112">
+                <img class="movie-card movie-card-face card-j" src="./素材/001-E-card-front.png" alt="" width="816" height="1112">
+              </div>
+              <span class="movie-token token-one"></span>
+              <span class="movie-token token-two"></span>
+            </div>
+            <div class="movie-caption">
+              <p class="eyebrow">How to play movie</p>
+              <h3 data-video-title>記憶と推理で正体を探る</h3>
+              <p data-video-copy>場のカードの位置を覚えながら、相手が見た情報と行動を読み合います。</p>
+            </div>
+            <div class="movie-progress" aria-hidden="true">
+              <span data-video-progress></span>
+            </div>
+          </div>
+          <div class="movie-controls">
+            <button class="button button-dark" type="button" data-video-toggle>一時停止</button>
+            <a class="button button-secondary button-paper" href="https://shiyutaku.com/home" target="_blank" rel="noopener">テストプレイ</a>
+          </div>
+        </section>
 
         <section class="rule-block rule-block-single reveal">
           <div class="rule-heading">
@@ -279,6 +309,6 @@
     </div>
   </footer>
 
-  <script src="./script.js" charset="utf-8"></script>
+  <script src="./script.js?v=20260818-24" charset="utf-8"></script>
 </body>
 </html>

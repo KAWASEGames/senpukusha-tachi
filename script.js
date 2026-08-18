@@ -20,6 +20,33 @@
   videoUrl: ""
 };
 
+const HOWTO_VIDEO_STEPS = [
+  {
+    title: "記憶と推理で正体を探る",
+    copy: "場のカードの位置を覚えながら、相手が見た情報と行動を読み合います。"
+  },
+  {
+    title: "カードを並べる",
+    copy: "イベント、アイテム、はずれカードを混ぜ、エイリアンカードを場に隠します。"
+  },
+  {
+    title: "2枚めくる",
+    copy: "自分のターンに場のカードを2枚選び、同じカードなら獲得します。"
+  },
+  {
+    title: "相手の記憶を読む",
+    copy: "どのカードを見たか、どこへ戻したか。小さな行動がヒントになります。"
+  },
+  {
+    title: "エイリアンを追加する",
+    copy: "1ラウンドに1回、手元のエイリアンカードを場に追加できます。"
+  },
+  {
+    title: "正体を暴く",
+    copy: "相手のエイリアンカードを2枚そろえると得点。先に3点で勝利です。"
+  }
+];
+
 const setText = (key, value) => {
   document.querySelectorAll(`[data-config="${key}"]`).forEach((node) => {
     node.textContent = value;
@@ -90,6 +117,59 @@ const setCurrentYear = () => {
   });
 };
 
+const initHowtoVideo = () => {
+  const root = document.querySelector("[data-howto-video]");
+  if (!root) return;
+
+  const title = root.querySelector("[data-video-title]");
+  const copy = root.querySelector("[data-video-copy]");
+  const progress = root.querySelector("[data-video-progress]");
+  const toggle = root.querySelector("[data-video-toggle]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let index = 0;
+  let timer = null;
+  let paused = reduceMotion;
+
+  const render = () => {
+    root.classList.remove(...HOWTO_VIDEO_STEPS.map((_, stepIndex) => `step-${stepIndex}`));
+    root.classList.add(`step-${index}`);
+    title.textContent = HOWTO_VIDEO_STEPS[index].title;
+    copy.textContent = HOWTO_VIDEO_STEPS[index].copy;
+    progress.style.width = `${((index + 1) / HOWTO_VIDEO_STEPS.length) * 100}%`;
+  };
+
+  const start = () => {
+    if (paused || timer) return;
+    timer = window.setInterval(() => {
+      index = (index + 1) % HOWTO_VIDEO_STEPS.length;
+      render();
+    }, 3600);
+  };
+
+  const stop = () => {
+    if (!timer) return;
+    window.clearInterval(timer);
+    timer = null;
+  };
+
+  toggle.addEventListener("click", () => {
+    paused = !paused;
+    root.classList.toggle("is-paused", paused);
+    toggle.textContent = paused ? "再生" : "一時停止";
+    if (paused) {
+      stop();
+    } else {
+      start();
+    }
+  });
+
+  root.classList.toggle("is-paused", paused);
+  toggle.textContent = paused ? "再生" : "一時停止";
+  render();
+  start();
+};
+
 applyProductConfig();
 setCurrentYear();
 revealOnScroll();
+initHowtoVideo();

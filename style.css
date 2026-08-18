@@ -613,6 +613,246 @@ dd {
   transform: translateY(82px);
 }
 
+.howto-video {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 44px;
+}
+
+.movie-screen {
+  --ink: #f1f5f8;
+  --muted: #a9b4bf;
+  --dim: #70808f;
+  --line: rgba(196, 213, 228, 0.23);
+  --line-strong: rgba(223, 235, 245, 0.46);
+  position: relative;
+  overflow: hidden;
+  min-height: 520px;
+  border: 1px solid var(--line-strong);
+  background:
+    radial-gradient(circle at 74% 22%, rgba(16, 167, 255, 0.19), transparent 19rem),
+    linear-gradient(135deg, #020b13 0%, #071a25 52%, #01070d 100%);
+  color: var(--ink);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.24);
+}
+
+.movie-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.movie-title-image,
+.movie-box-image,
+.movie-board,
+.movie-token {
+  position: absolute;
+  transition: opacity 520ms ease, transform 680ms ease;
+}
+
+.movie-title-image {
+  left: 7%;
+  top: 7%;
+  width: min(74%, 360px);
+  height: auto;
+  transform: translateY(0);
+}
+
+.movie-box-image {
+  right: -18%;
+  bottom: 16%;
+  width: min(88%, 470px);
+  height: auto;
+  filter: drop-shadow(0 28px 46px rgba(0, 0, 0, 0.46));
+}
+
+.movie-board {
+  left: 7%;
+  top: 29%;
+  width: 86%;
+  height: 47%;
+}
+
+.movie-card {
+  position: absolute;
+  width: clamp(54px, 17vw, 96px);
+  aspect-ratio: 816 / 1112;
+  border: 1px solid rgba(223, 235, 245, 0.34);
+  background: #07121d;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
+  object-fit: cover;
+  transition: opacity 520ms ease, transform 680ms ease, filter 520ms ease;
+}
+
+.movie-card-back::before {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border: 2px solid rgba(223, 235, 245, 0.22);
+}
+
+.movie-card-face {
+  opacity: 0;
+}
+
+.card-a { left: 2%; top: 4%; transform: rotate(-10deg); }
+.card-b { left: 25%; top: 2%; transform: rotate(7deg); }
+.card-c { left: 49%; top: 5%; transform: rotate(-5deg); }
+.card-d { left: 72%; top: 4%; transform: rotate(10deg); }
+.card-e { left: 15%; top: 48%; transform: rotate(5deg); }
+.card-f { left: 60%; top: 47%; transform: rotate(-8deg); }
+.card-g { left: 25%; top: 2%; transform: rotate(7deg); }
+.card-h { left: 49%; top: 5%; transform: rotate(-5deg); }
+.card-i { left: 15%; top: 48%; transform: rotate(5deg); }
+.card-j { left: 60%; top: 47%; transform: rotate(-8deg); }
+
+.movie-token {
+  width: 16px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 0 8px rgba(16, 167, 255, 0.14);
+  opacity: 0;
+}
+
+.token-one {
+  left: 31%;
+  top: 49%;
+}
+
+.token-two {
+  left: 63%;
+  top: 53%;
+  background: var(--pink);
+  box-shadow: 0 0 0 8px rgba(192, 22, 101, 0.14);
+}
+
+.movie-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 22px;
+  background: linear-gradient(180deg, transparent 0%, rgba(2, 11, 19, 0.92) 24%);
+  color: var(--ink);
+}
+
+.movie-caption .eyebrow {
+  margin-bottom: 4px;
+  color: var(--muted);
+}
+
+.movie-caption h3 {
+  margin-bottom: 6px;
+  font-size: 25px;
+  color: var(--ink);
+}
+
+.movie-caption p:last-child {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.movie-progress {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 10px;
+  z-index: 3;
+  height: 3px;
+  background: rgba(223, 235, 245, 0.18);
+}
+
+.movie-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--blue);
+  transition: width 240ms linear;
+}
+
+.movie-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button-paper {
+  border-color: var(--line-strong);
+  color: var(--paper-ink);
+}
+
+.howto-video.step-0 .movie-board,
+.howto-video.step-0 .movie-token {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.howto-video.step-1 .movie-title-image,
+.howto-video.step-2 .movie-title-image,
+.howto-video.step-3 .movie-title-image,
+.howto-video.step-4 .movie-title-image,
+.howto-video.step-5 .movie-title-image {
+  opacity: 0.12;
+  transform: translateY(-18px);
+}
+
+.howto-video.step-1 .movie-box-image,
+.howto-video.step-2 .movie-box-image,
+.howto-video.step-3 .movie-box-image,
+.howto-video.step-4 .movie-box-image,
+.howto-video.step-5 .movie-box-image {
+  opacity: 0.16;
+  transform: translateX(12%);
+}
+
+.howto-video.step-2 .card-g,
+.howto-video.step-2 .card-h,
+.howto-video.step-5 .card-i,
+.howto-video.step-5 .card-j {
+  opacity: 1;
+  transform: translateY(-8px) scale(1.06);
+  z-index: 2;
+}
+
+.howto-video.step-2 .card-b,
+.howto-video.step-2 .card-c,
+.howto-video.step-5 .card-e,
+.howto-video.step-5 .card-f {
+  opacity: 0;
+}
+
+.howto-video.step-3 .movie-card-back {
+  transform: translateY(6px) rotate(0deg);
+}
+
+.howto-video.step-3 .token-one,
+.howto-video.step-4 .token-one,
+.howto-video.step-5 .token-one,
+.howto-video.step-5 .token-two {
+  opacity: 1;
+}
+
+.howto-video.step-4 .card-i {
+  opacity: 1;
+  transform: translateY(-12px) scale(1.07) rotate(5deg);
+  z-index: 2;
+}
+
+.howto-video.step-4 .card-e {
+  opacity: 0;
+}
+
+.howto-video.is-paused .movie-card,
+.howto-video.is-paused .movie-title-image,
+.howto-video.is-paused .movie-box-image,
+.howto-video.is-paused .movie-board,
+.howto-video.is-paused .movie-token,
+.howto-video.is-paused .movie-progress span {
+  transition-duration: 1ms;
+}
+
 .rule-block,
 .quick-flow,
 .card-types,
@@ -1040,6 +1280,36 @@ dd {
     gap: 14px;
   }
 
+  .movie-screen {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+
+  .movie-title-image {
+    width: min(38%, 430px);
+  }
+
+  .movie-box-image {
+    right: 4%;
+    bottom: 6%;
+    width: min(38%, 450px);
+  }
+
+  .movie-board {
+    left: 6%;
+    top: 26%;
+    width: 52%;
+    height: 50%;
+  }
+
+  .movie-card {
+    width: clamp(58px, 8vw, 104px);
+  }
+
+  .movie-caption {
+    padding: 28px;
+  }
+
   .contact-panel {
     grid-template-columns: 1fr auto;
     align-items: end;
@@ -1091,6 +1361,14 @@ dd {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
     margin-top: 30px;
+  }
+
+  .movie-caption h3 {
+    font-size: 34px;
+  }
+
+  .movie-caption p:last-child {
+    font-size: 22px;
   }
 
   .section {
