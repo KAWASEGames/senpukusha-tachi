@@ -1026,7 +1026,7 @@ dd {
   }
 
   .narrow {
-    width: min(1060px, calc(100% - 24px));
+    width: min(1400px, calc(100% - 24px));
   }
 
   .hero {
