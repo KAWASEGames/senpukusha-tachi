@@ -146,14 +146,14 @@ button {
   min-height: auto;
   display: grid;
   align-items: start;
-  padding: 234px 0 54px;
+  padding: 96px 0 54px;
   border-bottom: 1px solid var(--line);
   overflow: hidden;
 }
 
 .hero-grid {
   display: grid;
-  gap: 38px;
+  gap: 58px;
 }
 
 .eyebrow {
@@ -319,7 +319,7 @@ dd {
   max-width: none;
   height: auto;
   object-fit: contain;
-  transform: translateY(-36px);
+  transform: none;
   filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.34));
 }
 
