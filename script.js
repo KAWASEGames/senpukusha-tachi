@@ -2,7 +2,7 @@
   title: "潜伏者たち",
   price: "税込 2,800円",
   buyUrl: "https://shiyutaku.com/home",
-  ctaLabel: "試遊卓で遊ぶ",
+  ctaLabel: "テストプレイ",
   players: "2〜4人",
   playTime: "15-20分",
   age: "6歳以上",

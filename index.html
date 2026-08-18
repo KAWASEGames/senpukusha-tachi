@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=20260817-8">
+  <link rel="stylesheet" href="./style.css?v=20260818-1">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -24,7 +24,7 @@
         <a href="#howto">遊び方</a>
         <a href="#cards">カード</a>
         <a href="#faq">Q&A</a>
-        <a href="#shiyutaku">試遊卓</a>
+        <a href="#shiyutaku">テストプレイ</a>
         <a href="#contact">お問い合わせ</a>
       </nav>
       <a class="nav-cta" href="#howto">遊び方</a>
@@ -47,7 +47,7 @@
           </dl>
           <div class="hero-actions">
             <a class="button button-primary" href="#howto">遊び方</a>
-            <a class="button button-secondary" href="https://shiyutaku.com/home" target="_blank" rel="noopener" data-buy-link data-config="ctaLabel">試遊卓で遊ぶ</a>
+            <a class="button button-secondary" href="https://shiyutaku.com/home" target="_blank" rel="noopener" data-buy-link data-config="ctaLabel">テストプレイ</a>
           </div>
         </div>
 
@@ -105,63 +105,71 @@
           <p>カードの役割と効果を、あとから確認しやすいように図鑑ページとして整理しています。</p>
         </div>
 
-        <section class="card-types reveal">
-          <h3>カードの種類</h3>
-          <div class="type-grid">
-            <article class="type-card">
-              <span class="mini-card"><span class="eye-icon"></span></span>
-              <div>
-                <h4>イベントカード</h4>
-                <p>めくった瞬間に情報や盤面を動かすカード。</p>
+        <section class="card-guide reveal">
+          <h3>カード一覧</h3>
+          <div class="card-accordion">
+            <details open>
+              <summary>
+                <span>イベントカード</span>
                 <small>6タイプ</small>
+              </summary>
+              <div class="card-detail">
+                <span class="mini-card"><span class="eye-icon"></span></span>
+                <div>
+                  <p>めくった瞬間に情報や盤面を動かすカード。</p>
+                  <ul class="effect-items">
+                    <li><span class="dot blue"></span>相手のカードを確認する</li>
+                    <li><span class="dot cyan"></span>場のカードを入れ替える</li>
+                    <li><span class="dot blue"></span>追加で1枚めくる</li>
+                    <li><span class="dot cyan"></span>相手の手番を制限する</li>
+                    <li><span class="dot blue"></span>公開情報を増やす</li>
+                    <li><span class="dot cyan"></span>捨て札を確認する</li>
+                  </ul>
+                </div>
               </div>
-            </article>
-            <article class="type-card">
-              <span class="mini-card"><span class="hazure-icon"></span></span>
-              <div>
-                <h4>はずれカード</h4>
-                <p>ペアにならない、記憶を揺らすカード。</p>
-                <small>7タイプ</small>
-              </div>
-            </article>
-            <article class="type-card">
-              <span class="mini-card"><span class="warning-icon"></span></span>
-              <div>
-                <h4>アイテムカード</h4>
-                <p>条件が揃うと強い効果を発揮するカード。</p>
+            </details>
+            <details>
+              <summary>
+                <span>アイテムカード</span>
                 <small>2タイプ</small>
+              </summary>
+              <div class="card-detail">
+                <span class="mini-card"><span class="warning-icon"></span></span>
+                <div>
+                  <p>条件が揃うと強い効果を発揮するカード。</p>
+                  <ul class="effect-items">
+                    <li><span class="dot yellow"></span>直前の情報を守る</li>
+                    <li><span class="dot yellow"></span>場札を一部見直す</li>
+                    <li><span class="dot yellow"></span>得点条件を補助する</li>
+                    <li><span class="dot yellow"></span>相手の推理を妨害する</li>
+                  </ul>
+                </div>
               </div>
-            </article>
-            <article class="type-card alien-type">
-              <span class="mini-card"><span class="alien-shape"></span></span>
-              <div>
-                <h4>エイリアンカード</h4>
-                <p>相手に見つかると得点される、正体のカード。</p>
+            </details>
+            <details>
+              <summary>
+                <span>はずれカード</span>
+                <small>7タイプ</small>
+              </summary>
+              <div class="card-detail">
+                <span class="mini-card"><span class="hazure-icon"></span></span>
+                <div>
+                  <p>ペアにならない、記憶を揺らすカード。</p>
+                </div>
+              </div>
+            </details>
+            <details>
+              <summary>
+                <span>エイリアンカード</span>
                 <small>3タイプ</small>
+              </summary>
+              <div class="card-detail alien-type">
+                <span class="mini-card"><span class="alien-shape"></span></span>
+                <div>
+                  <p>相手に見つかると得点される、正体のカード。</p>
+                </div>
               </div>
-            </article>
-          </div>
-        </section>
-
-        <section class="effect-list reveal">
-          <h3>イベントカード一覧</h3>
-          <div class="effect-grid">
-            <p><span class="dot blue"></span>相手のカードを確認する</p>
-            <p><span class="dot cyan"></span>場のカードを入れ替える</p>
-            <p><span class="dot blue"></span>追加で1枚めくる</p>
-            <p><span class="dot cyan"></span>相手の手番を制限する</p>
-            <p><span class="dot blue"></span>公開情報を増やす</p>
-            <p><span class="dot cyan"></span>捨て札を確認する</p>
-          </div>
-        </section>
-
-        <section class="effect-list reveal">
-          <h3>アイテムカード一覧</h3>
-          <div class="effect-grid">
-            <p><span class="dot yellow"></span>直前の情報を守る</p>
-            <p><span class="dot yellow"></span>場札を一部見直す</p>
-            <p><span class="dot yellow"></span>得点条件を補助する</p>
-            <p><span class="dot yellow"></span>相手の推理を妨害する</p>
+            </details>
           </div>
         </section>
       </div>
@@ -200,13 +208,13 @@
       <div class="wrap narrow">
         <div class="section-title reveal">
           <p class="eyebrow">Play online</p>
-          <h2>試遊卓で遊ぶ</h2>
-          <p>「潜伏者たち」は、試遊卓で実際に遊べます。ルールやカードの動きを、購入前にそのまま体験できます。</p>
+          <h2>テストプレイで遊ぶ</h2>
+          <p>「潜伏者たち」は、テストプレイページで実際に遊べます。購入前にルールやカードの動きを体験できます。</p>
         </div>
         <div class="shiyutaku-box reveal">
           <p class="eyebrow">Shiyutaku</p>
-          <p>オンラインの試遊ページを開いて、ブラウザ上でプレイできます。</p>
-          <a class="button button-dark" href="https://shiyutaku.com/home" target="_blank" rel="noopener" data-buy-link>試遊卓を開く</a>
+          <p>オンラインのテストプレイページを開いて、ブラウザ上でプレイできます。</p>
+          <a class="button button-dark" href="https://shiyutaku.com/home" target="_blank" rel="noopener" data-buy-link>テストプレイを開く</a>
         </div>
       </div>
     </section>
