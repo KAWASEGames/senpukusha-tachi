@@ -1033,6 +1033,34 @@ dd {
     padding: 234px 0 64px;
   }
 
+  .spec-strip {
+    width: min(100%, 660px);
+    margin-bottom: 22px;
+  }
+
+  .spec-strip div {
+    padding: 14px 18px;
+  }
+
+  dt {
+    font-size: 17px;
+  }
+
+  dd {
+    font-size: 22px;
+  }
+
+  .hero-actions {
+    gap: 16px;
+  }
+
+  .button {
+    min-width: 150px;
+    min-height: 52px;
+    padding: 0 28px;
+    font-size: 21px;
+  }
+
   .section {
     padding: 74px 0;
   }
