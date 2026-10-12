@@ -10,7 +10,7 @@ async function main() {
   const landingUrl = new URL("./index.html", url).href;
   try {
     for (const width of [320, 433, 1440]) {
-      const context = await browser.newContext({ viewport: { width, height: 950 } });
+      const context = await browser.newContext({ viewport: { width, height: 950 }, hasTouch: width < 680 });
       const page = await context.newPage();
       const errors = [];
       page.on("pageerror", (error) => errors.push(error.message));
@@ -46,7 +46,9 @@ async function main() {
       await page.waitForFunction(() => [...document.querySelectorAll("[data-cpu-trial] img[src]")].filter((img) => img.getBoundingClientRect().height > 0).every((img) => img.complete && img.naturalWidth > 0));
       assert.equal(await root.isVisible(), true);
       assert.equal(await page.locator("[data-trial-slot]").count(), 18);
-      assert.equal(await page.locator('[data-trial-action="advance"]').isDisabled(), true);
+      assert.equal(await page.locator('[data-trial-action="advance"]').isVisible(), false);
+      assert.equal(await page.locator("[data-trial-alien]").count(), 0);
+      assert.equal(await page.locator("[data-trial-hand]").count(), 3);
       const layout = await root.evaluate((node) => ({
         overflow: document.documentElement.scrollWidth > innerWidth,
         minCardWidth: Math.min(...[...node.querySelectorAll("[data-trial-slot]")].map((card) => card.getBoundingClientRect().width)),
@@ -65,10 +67,51 @@ async function main() {
         console.log("Screenshot:", screenshot);
       }
       const slot = (index) => page.locator(`[data-trial-slot="${index}"]`);
-      await slot(0).click();
-      await slot(3).click();
-      await page.locator('[data-trial-action="advance"]').click();
+      const hand = (index) => page.locator(`[data-trial-hand="${index}"]`);
+      const cdp = width < 680 ? await context.newCDPSession(page) : null;
+      const drag = async (handIndex, slotIndex) => {
+        await hand(handIndex).scrollIntoViewIfNeeded();
+        const source = await hand(handIndex).boundingBox();
+        const target = await slot(slotIndex).boundingBox();
+        const from = { x: source.x + source.width / 2, y: source.y + source.height / 3 };
+        const to = { x: target.x + target.width / 2, y: target.y + target.height / 2 };
+        if (cdp) {
+          const touch = (point) => ({ ...point, radiusX: 4, radiusY: 4, force: 1, id: 1 });
+          await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [touch(from)] });
+          for (let step = 1; step <= 8; step++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [touch({ x: from.x + (to.x - from.x) * step / 8, y: from.y + (to.y - from.y) * step / 8 })] });
+          await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+        } else {
+          await page.mouse.move(from.x, from.y);
+          await page.mouse.down();
+          await page.mouse.move(to.x, to.y, { steps: 8 });
+          await page.mouse.up();
+        }
+        assert.equal(await page.evaluate(({ h, s }) => window.testTrial.placement.includes(s), { h: handIndex, s: slotIndex }), true);
+        assert.equal(await page.locator(".trial-drag-ghost").count(), 0);
+      };
+      const tap = async (locator) => width < 680 ? locator.tap() : locator.click();
+      await tap(hand(0));
+      assert.equal(await hand(0).getAttribute("aria-pressed"), "true");
+      await tap(hand(0));
+      assert.equal(await hand(0).getAttribute("aria-pressed"), "false");
+      const deploy = async () => {
+        await drag(0, 0);
+        await tap(hand(1));
+        assert.equal(await hand(1).getAttribute("aria-pressed"), "true");
+        await tap(slot(3));
+        await page.waitForFunction(() => window.testTrial.phase === "turn");
+        assert.equal(await page.evaluate(() => window.testTrial.turn), 0);
+        assert.equal(await page.locator("[data-trial-hand-count]").textContent(), "1枚");
+      };
+      await deploy();
       assert.equal(await page.evaluate(() => window.testTrial.phase), "turn");
+      const shuffle = page.locator('[data-trial-action="shuffle"]');
+      assert.equal(await shuffle.isDisabled(), false);
+      await shuffle.click();
+      assert.equal(await page.evaluate(() => window.testTrial.board.length), 17);
+      assert.equal(await page.locator("[data-trial-hand-count]").textContent(), "0枚");
+      assert.equal(await shuffle.isDisabled(), true);
+      assert.equal(await page.locator("[data-trial-shuffle-label]").textContent(), "残り0回");
 
       // Mismatch hands the turn to CPU, whose two flips are then visible.
       const mismatch = await page.evaluate(() => {
@@ -78,6 +121,7 @@ async function main() {
         return [a, b];
       });
       await slot(mismatch[0]).click();
+      assert.equal(await shuffle.isDisabled(), true);
       await slot(mismatch[1]).click();
       await page.locator('[data-trial-action="pause"]').click();
       const pausedPhase = await page.evaluate(() => window.testTrial.phase);
@@ -86,7 +130,8 @@ async function main() {
       assert.equal(await slot(0).isDisabled(), true);
       await page.locator('[data-trial-action="pause"]').click();
       await page.waitForFunction(() => ["roundEnd", "matchEnd"].includes(window.testTrial.phase) || (window.testTrial.turnNumber >= 3 && window.testTrial.turn === 0 && window.testTrial.phase === "turn"));
-      assert.ok(await page.evaluate(() => window.testTrial.memory[1].size > 2));
+      assert.ok(await page.evaluate(() => window.testTrial.history.some((entry) => entry.includes("CPU"))));
+      assert.equal(await page.evaluate(() => window.testTrial.lastPair.length), 2);
 
       // Pause and reset cancel pending CPU/resolve timers.
       await page.locator('[data-trial-action="reset"]').click();
@@ -96,9 +141,7 @@ async function main() {
 
       // Play all three rounds through the actual buttons to reach the result.
       for (let round = 1; round <= 3; round++) {
-        await slot(0).click();
-        await slot(3).click();
-        await page.locator('[data-trial-action="advance"]').click();
+        await deploy();
         const opponentPair = await page.evaluate(() => {
           const game = window.testTrial;
           return game.board.map((card, index) => index).filter((index) => game.board[index].type === game.alienType(1));
@@ -122,7 +165,7 @@ async function main() {
       assert.equal(await page.locator("[data-cpu-trial]").count(), 0);
       assert.equal(await page.locator(".play-links").isVisible(), true);
       assert.deepEqual(errors, []);
-      console.log(JSON.stringify({ width, layout, cpuTurn: true, matchComplete: true, errors }));
+      console.log(JSON.stringify({ width, layout, dragAndDrop: true, touchFallback: width < 680, shuffle: true, cpuTurn: true, matchComplete: true, errors }));
       await context.close();
     }
   } finally {

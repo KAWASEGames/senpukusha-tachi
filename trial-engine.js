@@ -16,10 +16,9 @@
   const DECK = ["reveal", "search", "extra", "skip", "lens", "shuffle"];
 
   class Game {
-    constructor({ random = Math.random, difficulty = "normal", alien = 0 } = {}) {
+    constructor({ random = Math.random, difficulty = "normal" } = {}) {
       this.random = random;
       this.difficulty = difficulty;
-      this.alien = alien;
       this.newMatch();
     }
 
@@ -60,17 +59,11 @@
       this.lastPair = [];
       this.history = [];
       this.turn = 0;
-      this.announce("あなたのエイリアンを隠す場所を2か所選んでください。");
+      this.announce("手札の赤いカードを2枚、好きな場所へ配置してください。");
     }
 
     alienType(player) {
-      return `alien${player === 0 ? this.alien : (this.alien + 1) % 4}`;
-    }
-
-    chooseAlien(index) {
-      if (this.phase !== "setup" || !Number.isInteger(index) || index < 0 || index > 3) return false;
-      this.alien = index;
-      return true;
+      return player === 0 ? "alien0" : "alien1";
     }
 
     place(index) {
@@ -82,7 +75,7 @@
       } else {
         return false;
       }
-      this.message = this.placement.length === 2 ? "隠す場所が決まりました。対戦を始められます。" : `あと${2 - this.placement.length}か所選んでください。`;
+      this.message = this.placement.length === 2 ? "配置完了。あなたから始めます。" : `あと${2 - this.placement.length}枚配置してください。`;
       return true;
     }
 
@@ -101,10 +94,10 @@
       slots.slice(2).forEach((index, order) => {
         this.board[index] = { type: cards[order], public: false };
       });
-      this.turn = this.random() < 0.5 ? 0 : 1;
+      this.turn = 0;
       this.turnNumber = 1;
       this.phase = "turn";
-      this.announce(this.turn === 0 ? "あなたが先手です。カードを2枚めくってください。" : "CPUが先手です。");
+      this.announce("あなたの番です。カードを2枚めくってください。");
       return true;
     }
 

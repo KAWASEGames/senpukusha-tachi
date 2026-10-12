@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css?v=20261012-04">
-  <link rel="stylesheet" href="./trial.css?v=20261012-02">
+  <link rel="stylesheet" href="./trial.css?v=20261012-03">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -45,42 +45,48 @@
       <div class="trial-scores" aria-label="3点先取の得点">
         <div class="trial-player" data-trial-player="0">
           <img data-trial-avatar="0" src="./素材/001-E-card-front.png" alt="あなたのエイリアン" width="816" height="1112">
-          <span>あなた</span><strong><output data-trial-score="0">0</output><small> / 3点</small></strong>
+          <span>あなた・赤</span><strong><output data-trial-score="0">0</output><small> / 3点</small></strong>
         </div>
         <div class="trial-player" data-trial-player="1">
           <img data-trial-avatar="1" src="./素材/002-E-card-front.png" alt="CPUのエイリアン" width="816" height="1112">
-          <span>CPU</span><strong><output data-trial-score="1">0</output><small> / 3点</small></strong>
+          <span>CPU・青</span><strong><output data-trial-score="1">0</output><small> / 3点</small></strong>
         </div>
       </div>
       <div class="trial-status" role="status" aria-live="polite" aria-atomic="true">
         <div><span data-trial-phase>配置</span><span data-trial-round>ラウンド1</span></div>
         <p data-trial-message></p>
       </div>
-      <div class="trial-alien-picker" data-trial-picker role="group" aria-label="あなたのエイリアンを選ぶ">
-        <span>あなたのエイリアン</span><div data-trial-aliens></div>
+      <div class="trial-hand-area">
+        <div class="trial-hand-title"><h4>あなたの手札</h4><span data-trial-hand-count>3枚</span></div>
+        <div class="trial-hand-controls">
+          <div class="trial-hand" role="group" aria-label="赤のエイリアンの手札">
+            <button class="trial-hand-card" type="button" data-trial-hand="0" aria-label="手札1・赤いエイリアンを配置" aria-pressed="false">
+              <img src="./素材/001-E-card-front.png" alt="" width="816" height="1112" draggable="false"><span data-hand-note>配置1</span>
+            </button>
+            <button class="trial-hand-card" type="button" data-trial-hand="1" aria-label="手札2・赤いエイリアンを配置" aria-pressed="false">
+              <img src="./素材/001-E-card-front.png" alt="" width="816" height="1112" draggable="false"><span data-hand-note>配置2</span>
+            </button>
+            <button class="trial-hand-card" type="button" data-trial-hand="2" aria-label="予備のエイリアンを追加してシャッフル" disabled>
+              <img src="./素材/001-E-card-front.png" alt="" width="816" height="1112" draggable="false"><span data-hand-note>予備</span>
+            </button>
+          </div>
+          <button class="trial-shuffle" type="button" data-trial-action="shuffle" disabled>
+            <img src="./assets/icons/shuffle.svg" alt="" width="20" height="20"><span>シャッフル<small data-trial-shuffle-label>配置後に使用</small></span>
+          </button>
+        </div>
       </div>
       <div class="trial-layout">
         <div>
           <div class="trial-board" data-trial-board role="group" aria-label="場のカード"></div>
           <div class="trial-actions">
-            <button class="trial-command" type="button" data-trial-action="advance">対戦開始</button>
+            <button class="trial-command" type="button" data-trial-action="advance" hidden>続ける</button>
           </div>
         </div>
-        <aside class="trial-side" aria-label="手札と直前のカード">
-          <h4>手札</h4>
-          <button class="trial-reserve" type="button" data-trial-action="reserve">
-            <img data-trial-reserve-image src="./素材/001-E-card-front.png" alt="" width="816" height="1112">
-            <span>エイリアン追加<small data-trial-reserve-label>残り1枚</small></span>
-          </button>
-          <div class="trial-items">
-            <span class="trial-passive" data-trial-lens>透視 <small>未獲得</small></span>
-            <button class="trial-shuffle" type="button" data-trial-action="shuffle" title="獲得したアイテムで場をシャッフル">
-              <img src="./assets/icons/shuffle.svg" alt="" width="18" height="18">シャッフル
-            </button>
-          </div>
-          <section class="trial-last" aria-label="直前のカード">
-            <h4>直前のカード</h4><div class="trial-preview" data-trial-preview></div>
+        <aside class="trial-side" aria-label="めくったカード">
+          <section class="trial-last" aria-label="めくったカード">
+            <h4>めくったカード</h4><div class="trial-preview" data-trial-preview></div>
           </section>
+          <span class="trial-passive" data-trial-lens hidden>透視 <small>所持中</small></span>
           <details class="trial-history"><summary>対戦ログ</summary><ol data-trial-log></ol></details>
         </aside>
       </div>
@@ -88,9 +94,10 @@
         <summary>試遊ルール</summary>
         <ul>
           <li>16枚のショート版。イベント4種類・アイテム2種類で、先に3点を取った方の勝利です。</li>
-          <li>自分のエイリアンを2枚隠し、交互に2枚ずつめくります。同じカードなら獲得します。</li>
+          <li>あなたは赤、CPUは青。赤い手札2枚を好きな場所へドラッグして配置すると対戦開始です。手札と置き場所の順にタップしても配置できます。</li>
+          <li>2枚をタップしてめくります。同じカードなら効果が発動し、そろわなければ相手の番です。追加ターン・スキップ以外は効果の処理後に手番を交代します。</li>
           <li>相手のエイリアンのペアを発見すると1点。自分のペアをそろえると相手に1点入り、ラウンド終了です。</li>
-          <li>エイリアン追加は1ラウンド1回。自分の手番の最初に使用し、場をシャッフルします。全体公開されたカードは表向きを保ちます。</li>
+          <li>シャッフルボタンは、自分の手番の最初に使えます。予備の赤カードを場へ追加してシャッフルするのは1ラウンド1回。アイテムを獲得すると、さらに1回使えます。全体公開されたカードは表向きを保ちます。</li>
           <li>「透視」は獲得後、毎ターン終了時に自動発動。「シャッフル」は獲得後、手番の最初に1度だけ使用できます。</li>
         </ul>
       </details>
@@ -111,7 +118,7 @@
   <footer class="footer">
     <div class="wrap footer-inner"><a href="./index.html">潜伏者たち</a><a href="./index.html#shiyutaku">サイトに戻る</a></div>
   </footer>
-  <script src="./trial-engine.js?v=20261012-01" charset="utf-8"></script>
-  <script src="./trial-game.js?v=20261012-01" charset="utf-8"></script>
+  <script src="./trial-engine.js?v=20261012-02" charset="utf-8"></script>
+  <script src="./trial-game.js?v=20261012-02" charset="utf-8"></script>
 </body>
 </html>

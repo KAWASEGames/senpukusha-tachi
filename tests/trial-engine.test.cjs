@@ -28,6 +28,17 @@ function pair(game, a, b) {
   assert.equal(game.resolve(), true);
 }
 
+test("players are fixed to red and blue, and the human starts", () => {
+  const game = new Game({ random: seeded(7), alien: 3 });
+  assert.equal(game.alienType(0), "alien0");
+  assert.equal(game.alienType(1), "alien1");
+  game.place(0);
+  game.place(5);
+  game.startRound();
+  assert.equal(game.turn, 0);
+  assert.equal(game.board.some((card) => card.type === "alien2" || card.type === "alien3"), false);
+});
+
 test("setup requires two distinct positions and creates eight pairs", () => {
   const game = new Game({ random: seeded() });
   assert.equal(game.startRound(), false);
