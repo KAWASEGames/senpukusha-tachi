@@ -1071,7 +1071,8 @@ dd {
 }
 
 @media (max-width: 679px) {
-  .card-accordion summary {
+  .card-accordion summary,
+  .faq-list summary {
     font-size: 19px;
     font-weight: 500;
   }
