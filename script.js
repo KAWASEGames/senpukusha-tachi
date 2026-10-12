@@ -90,6 +90,35 @@ const setCurrentYear = () => {
   });
 };
 
+const initVideoPlayer = () => {
+  const player = document.querySelector("[data-video-player]");
+  if (!player) return;
+
+  const video = player.querySelector("video");
+  const playButton = player.querySelector("[data-video-play]");
+  if (!video || !playButton) return;
+
+  const syncPlayButton = () => {
+    playButton.hidden = !video.paused && !video.ended;
+    playButton.setAttribute("aria-label", video.ended ? "遊び方動画をもう一度再生" : "遊び方動画を再生");
+    playButton.title = video.ended ? "もう一度再生" : "再生";
+  };
+
+  playButton.addEventListener("click", async () => {
+    try {
+      await video.play();
+    } catch {
+      syncPlayButton();
+    }
+  });
+
+  ["playing", "pause", "ended"].forEach((event) => {
+    video.addEventListener(event, syncPlayButton);
+  });
+  syncPlayButton();
+};
+
 applyProductConfig();
 setCurrentYear();
 revealOnScroll();
+initVideoPlayer();

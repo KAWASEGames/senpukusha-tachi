@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=20260928-01">
+  <link rel="stylesheet" href="./style.css?v=20261012-01">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -67,11 +67,14 @@
         </div>
 
         <section class="howto-video reveal" aria-label="遊び方動画">
-          <div class="movie-screen">
+          <div class="movie-screen" data-video-player>
             <video class="howto-movie" controls playsinline preload="metadata" aria-label="潜伏者たちの遊び方動画">
               <source src="./素材/最終.mp4?v=20261009-02" type="video/mp4">
               お使いのブラウザでは動画を再生できません。
             </video>
+            <button class="movie-play" type="button" data-video-play aria-label="遊び方動画を再生" title="再生" hidden>
+              <img src="./assets/icons/play.svg" alt="" width="40" height="40" aria-hidden="true">
+            </button>
           </div>
           <div class="movie-controls">
             <a class="button button-secondary button-paper" href="https://shiyutaku.com/home" target="_blank" rel="noopener">テストプレイ</a>
@@ -283,6 +286,6 @@
     </div>
   </footer>
 
-  <script src="./script.js?v=20260928-01" charset="utf-8"></script>
+  <script src="./script.js?v=20261012-01" charset="utf-8"></script>
 </body>
 </html>

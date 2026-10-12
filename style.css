@@ -623,6 +623,7 @@ dd {
 }
 
 .movie-screen {
+  position: relative;
   overflow: hidden;
   border: 1px solid var(--line-strong);
   background: #01070d;
@@ -635,6 +636,44 @@ dd {
   height: auto;
   max-height: 80vh;
   background: #01070d;
+}
+
+.movie-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  padding: 0;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.45);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.movie-play[hidden] {
+  display: none;
+}
+
+.movie-play img {
+  width: 36px;
+  height: 36px;
+}
+
+.movie-play:hover {
+  background: #fff;
+  box-shadow: 0 4px 26px rgba(0, 0, 0, 0.6);
+}
+
+.movie-play:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
 }
 
 .movie-controls {
@@ -1089,6 +1128,16 @@ dd {
 }
 
 @media (min-width: 980px) {
+  .movie-play {
+    width: 96px;
+    height: 96px;
+  }
+
+  .movie-play img {
+    width: 46px;
+    height: 46px;
+  }
+
   .wrap {
     width: min(1400px, calc(100% - 24px));
   }
