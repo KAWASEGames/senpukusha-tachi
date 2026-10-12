@@ -15,7 +15,7 @@ node tests/trial-browser.cjs
 Optional environment variables:
 
 - `TRIAL_BROWSER_PATH`: path to Chrome or Edge if Playwright's Chromium is not installed.
-- `TRIAL_TEST_URL`: deployed site URL; defaults to the local `index.html`.
+- `TRIAL_TEST_URL`: deployed CPU game URL; defaults to the local `play.html`.
 
 The browser checks use a fixed seed and shortened timers inside the test browser only.
 Screenshots are written to the system temporary directory.

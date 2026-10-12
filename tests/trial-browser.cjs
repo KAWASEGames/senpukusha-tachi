@@ -6,7 +6,8 @@ const os = require("node:os");
 
 async function main() {
   const browser = await chromium.launch({ headless: true, ...(process.env.TRIAL_BROWSER_PATH ? { executablePath: process.env.TRIAL_BROWSER_PATH } : {}) });
-  const url = process.env.TRIAL_TEST_URL || pathToFileURL(path.resolve(__dirname, "../index.html")).href;
+  const url = process.env.TRIAL_TEST_URL || pathToFileURL(path.resolve(__dirname, "../play.html")).href;
+  const landingUrl = new URL("./index.html", url).href;
   try {
     for (const width of [320, 433, 1440]) {
       const context = await browser.newContext({ viewport: { width, height: 950 } });
@@ -33,7 +34,12 @@ async function main() {
           }
         });
       });
-      await page.goto(url, { waitUntil: "domcontentloaded" });
+      await page.goto(landingUrl, { waitUntil: "domcontentloaded" });
+      assert.equal(await page.locator("[data-cpu-trial]").count(), 0);
+      assert.equal(await page.locator('script[src*="trial-"]').count(), 0);
+      assert.equal(await page.locator(".external-play-link").getAttribute("href"), "https://shiyutaku.com/home");
+      await page.locator('.play-links a[href="./play.html"]').click();
+      await page.waitForURL("**/play.html");
       const root = page.locator("[data-cpu-trial]");
       await root.scrollIntoViewIfNeeded();
       await page.evaluate(() => document.fonts.ready);
@@ -111,6 +117,10 @@ async function main() {
       assert.equal(await page.locator("[data-trial-dialog]").isVisible(), false);
       await page.locator('[data-trial-action="advance"]').click();
       assert.equal(await page.locator('[data-trial-score="0"]').textContent(), "0");
+      await page.locator(".trial-back-link").click();
+      await page.waitForURL("**/index.html#shiyutaku");
+      assert.equal(await page.locator("[data-cpu-trial]").count(), 0);
+      assert.equal(await page.locator(".play-links").isVisible(), true);
       assert.deepEqual(errors, []);
       console.log(JSON.stringify({ width, layout, cpuTurn: true, matchComplete: true, errors }));
       await context.close();

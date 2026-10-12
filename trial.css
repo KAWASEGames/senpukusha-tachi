@@ -1,4 +1,9 @@
-#shiyutaku { scroll-margin-top: 100px; }
+.trial-page { min-height: calc(100vh - 73px); padding: 24px 0 40px; background: #e1e5e1; color: #101820; }
+.trial-page .wrap { width: min(1080px, calc(100% - 24px)); }
+.trial-back-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; color: #f1f5f8; font-size: 15px; white-space: nowrap; }
+.trial-back-link:hover { text-decoration: underline; }
+.trial-page-links { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 24px; padding-top: 20px; border-top: 1px solid #bdc8c6; font-size: 14px; }
+.trial-page-links > a:not(.trial-external) { display: inline-flex; align-items: center; min-height: 44px; color: #4b5b65; text-decoration: underline; text-underline-offset: 4px; }
 .cpu-trial { max-width: 1080px; color: #101820; font-size: 16px; line-height: 1.5; scroll-margin-top: 100px; }
 .cpu-trial [hidden] { display: none !important; }
 .cpu-trial[hidden] { display: none; }
@@ -80,7 +85,6 @@
 .trial-card-dialog::backdrop { background: rgba(2, 11, 19, .72); }
 .trial-card-dialog .trial-icon { position: absolute; right: 8px; top: 6px; }
 .trial-dialog-image { width: 100%; max-height: calc(100vh - 120px); height: auto; object-fit: contain; }
-.shiyutaku-box:has(.trial-external) { margin-top: 24px; }
 .trial-external { gap: 10px; }
 .trial-external > img { filter: invert(1); }
 @media (min-width: 680px) {

@@ -539,6 +539,7 @@ dd {
 }
 
 .section-shiyutaku {
+  scroll-margin-top: 100px;
   --ink: var(--paper-ink);
   --muted: var(--paper-muted);
   --dim: #6c7880;
@@ -981,6 +982,17 @@ dd {
 
 .shiyutaku-box .button {
   margin-top: 0;
+}
+
+.play-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.external-play-link {
+  gap: 10px;
 }
 
 .button-dark {
