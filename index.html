@@ -13,6 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css?v=20261012-03">
+  <link rel="stylesheet" href="./trial.css?v=20261012-01">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -49,7 +50,7 @@
           </dl>
           <div class="hero-actions">
             <a class="button button-primary" href="#howto">遊び方</a>
-            <a class="button button-secondary" href="https://shiyutaku.com/home" target="_blank" rel="noopener" data-buy-link data-config="ctaLabel">テストプレイ</a>
+            <a class="button button-secondary" href="#shiyutaku" data-config="ctaLabel">テストプレイ</a>
           </div>
         </div>
 
@@ -77,7 +78,7 @@
             </button>
           </div>
           <div class="movie-controls">
-            <a class="button button-secondary button-paper" href="https://shiyutaku.com/home" target="_blank" rel="noopener">テストプレイ</a>
+            <a class="button button-secondary button-paper" href="#shiyutaku">テストプレイ</a>
           </div>
         </section>
 
@@ -250,10 +251,85 @@
         <div class="section-title reveal">
           <p class="eyebrow">Play online</p>
           <h2>テストプレイで遊ぶ</h2>
-          <p>「潜伏者たち」は、テストプレイページで実際に遊べます。購入前にルールやカードの動きを体験できます。</p>
         </div>
+        <section class="cpu-trial" data-cpu-trial aria-label="CPU対戦" hidden>
+          <header class="trial-toolbar">
+            <h3>CPU対戦 <small>ショート版</small></h3>
+            <div class="trial-tools">
+              <label class="trial-difficulty">難易度
+                <select data-trial-difficulty>
+                  <option value="easy">やさしい</option>
+                  <option value="normal" selected>ふつう</option>
+                </select>
+              </label>
+              <button class="trial-icon" type="button" data-trial-action="pause" aria-label="一時停止" title="一時停止">
+                <img src="./assets/icons/pause.svg" alt="" width="20" height="20">
+              </button>
+              <button class="trial-icon" type="button" data-trial-action="reset" aria-label="新しい対戦" title="新しい対戦">
+                <img src="./assets/icons/rotate-ccw.svg" alt="" width="20" height="20">
+              </button>
+            </div>
+          </header>
+          <div class="trial-scores" aria-label="3点先取の得点">
+            <div class="trial-player" data-trial-player="0">
+              <img data-trial-avatar="0" src="./素材/001-E-card-front.png" alt="あなたのエイリアン" width="816" height="1112">
+              <span>あなた</span><strong><output data-trial-score="0">0</output><small> / 3点</small></strong>
+            </div>
+            <div class="trial-player" data-trial-player="1">
+              <img data-trial-avatar="1" src="./素材/002-E-card-front.png" alt="CPUのエイリアン" width="816" height="1112">
+              <span>CPU</span><strong><output data-trial-score="1">0</output><small> / 3点</small></strong>
+            </div>
+          </div>
+          <div class="trial-status" role="status" aria-live="polite" aria-atomic="true">
+            <div><span data-trial-phase>配置</span><span data-trial-round>ラウンド1</span></div>
+            <p data-trial-message></p>
+          </div>
+          <div class="trial-alien-picker" data-trial-picker role="group" aria-label="あなたのエイリアンを選ぶ">
+            <span>あなたのエイリアン</span><div data-trial-aliens></div>
+          </div>
+          <div class="trial-layout">
+            <div>
+              <div class="trial-board" data-trial-board role="group" aria-label="場のカード"></div>
+              <div class="trial-actions">
+                <button class="trial-command" type="button" data-trial-action="advance">対戦開始</button>
+              </div>
+            </div>
+            <aside class="trial-side" aria-label="手札と直前のカード">
+              <h4>手札</h4>
+              <button class="trial-reserve" type="button" data-trial-action="reserve">
+                <img data-trial-reserve-image src="./素材/001-E-card-front.png" alt="" width="816" height="1112">
+                <span>エイリアン追加<small data-trial-reserve-label>残り1枚</small></span>
+              </button>
+              <div class="trial-items">
+                <span class="trial-passive" data-trial-lens>透視 <small>未獲得</small></span>
+                <button class="trial-shuffle" type="button" data-trial-action="shuffle" title="獲得したアイテムで場をシャッフル">
+                  <img src="./assets/icons/shuffle.svg" alt="" width="18" height="18">シャッフル
+                </button>
+              </div>
+              <section class="trial-last" aria-label="直前のカード">
+                <h4>直前のカード</h4><div class="trial-preview" data-trial-preview></div>
+              </section>
+              <details class="trial-history"><summary>対戦ログ</summary><ol data-trial-log></ol></details>
+            </aside>
+          </div>
+          <details class="trial-rules">
+            <summary>試遊ルール</summary>
+            <ul>
+              <li>16枚のショート版。イベント4種類・アイテム2種類で、先に3点を取った方の勝利です。</li>
+              <li>自分のエイリアンを2枚隠し、交互に2枚ずつめくります。同じカードなら獲得します。</li>
+              <li>相手のエイリアンのペアを発見すると1点。自分のペアをそろえると相手に1点入り、ラウンド終了です。</li>
+              <li>エイリアン追加は1ラウンド1回。自分の手番の最初に使用し、場をシャッフルします。全体公開されたカードは表向きを保ちます。</li>
+              <li>「透視」は獲得後、毎ターン終了時に自動発動。「シャッフル」は獲得後、手番の最初に1度だけ使用できます。</li>
+            </ul>
+          </details>
+          <dialog class="trial-card-dialog" data-trial-dialog aria-label="カードの詳細">
+            <button class="trial-icon" type="button" data-trial-action="close-card" aria-label="閉じる" title="閉じる"><img src="./assets/icons/x.svg" alt="" width="20" height="20"></button>
+            <img class="trial-dialog-image" data-trial-dialog-image alt="" width="816" height="1112">
+          </dialog>
+        </section>
+        <noscript><p>CPU対戦にはJavaScriptが必要です。試遊卓でも遊べます。</p></noscript>
         <div class="shiyutaku-box reveal">
-          <a class="button button-dark" href="https://shiyutaku.com/home" target="_blank" rel="noopener" data-buy-link>テストプレイを開く</a>
+          <a class="button button-dark trial-external" href="https://shiyutaku.com/home" target="_blank" rel="noopener" data-buy-link>試遊卓で遊ぶ <img src="./assets/icons/external-link.svg" alt="" width="18" height="18"><span class="sr-only">（外部サイト、新しいタブ）</span></a>
         </div>
       </div>
     </section>
@@ -287,5 +363,7 @@
   </footer>
 
   <script src="./script.js?v=20261012-01" charset="utf-8"></script>
+  <script src="./trial-engine.js?v=20261012-01" charset="utf-8"></script>
+  <script src="./trial-game.js?v=20261012-01" charset="utf-8"></script>
 </body>
 </html>
