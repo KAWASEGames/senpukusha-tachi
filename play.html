@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css?v=20261012-04">
-  <link rel="stylesheet" href="./trial.css?v=20261012-03">
+  <link rel="stylesheet" href="./trial.css?v=20261012-04">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -42,20 +42,16 @@
           </button>
         </div>
       </header>
-      <div class="trial-scores" aria-label="3点先取の得点">
-        <div class="trial-player" data-trial-player="0">
-          <img data-trial-avatar="0" src="./素材/001-E-card-front.png" alt="あなたのエイリアン" width="816" height="1112">
-          <span>あなた・赤</span><strong><output data-trial-score="0">0</output><small> / 3点</small></strong>
-        </div>
-        <div class="trial-player" data-trial-player="1">
-          <img data-trial-avatar="1" src="./素材/002-E-card-front.png" alt="CPUのエイリアン" width="816" height="1112">
-          <span>CPU・青</span><strong><output data-trial-score="1">0</output><small> / 3点</small></strong>
-        </div>
-      </div>
       <div class="trial-status" role="status" aria-live="polite" aria-atomic="true">
         <div><span data-trial-phase>配置</span><span data-trial-round>ラウンド1</span></div>
         <p data-trial-message></p>
       </div>
+      <div class="trial-arena">
+        <aside class="trial-seat trial-seat-human" aria-label="あなた・赤">
+          <div class="trial-player" data-trial-player="0">
+            <img data-trial-avatar="0" src="./素材/001-E-card-front.png" alt="あなたのエイリアン" width="816" height="1112">
+            <span>あなた・赤</span><strong><output data-trial-score="0">0</output><small> / 3点</small></strong>
+          </div>
       <div class="trial-hand-area">
         <div class="trial-hand-title"><h4>あなたの手札</h4><span data-trial-hand-count>3枚</span></div>
         <div class="trial-hand-controls">
@@ -75,13 +71,24 @@
           </button>
         </div>
       </div>
-      <div class="trial-layout">
-        <div>
+        </aside>
+        <div class="trial-table-area">
           <div class="trial-board" data-trial-board role="group" aria-label="場のカード"></div>
           <div class="trial-actions">
             <button class="trial-command" type="button" data-trial-action="advance" hidden>続ける</button>
           </div>
         </div>
+        <aside class="trial-seat trial-seat-cpu" aria-label="CPU・青">
+          <div class="trial-player" data-trial-player="1">
+            <img data-trial-avatar="1" src="./素材/002-E-card-front.png" alt="CPUのエイリアン" width="816" height="1112">
+            <span>CPU・青</span><strong><output data-trial-score="1">0</output><small> / 3点</small></strong>
+          </div>
+          <div class="trial-cpu-hand" aria-label="CPUの予備カード">
+            <span>手札</span><img src="./素材/002-E-card-front.png" alt="青の予備カード" width="816" height="1112" data-trial-cpu-reserve>
+          </div>
+        </aside>
+      </div>
+      <div class="trial-layout">
         <aside class="trial-side" aria-label="めくったカード">
           <section class="trial-last" aria-label="めくったカード">
             <h4>めくったカード</h4><div class="trial-preview" data-trial-preview></div>
@@ -119,6 +126,6 @@
     <div class="wrap footer-inner"><a href="./index.html">潜伏者たち</a><a href="./index.html#shiyutaku">サイトに戻る</a></div>
   </footer>
   <script src="./trial-engine.js?v=20261012-02" charset="utf-8"></script>
-  <script src="./trial-game.js?v=20261012-02" charset="utf-8"></script>
+  <script src="./trial-game.js?v=20261012-03" charset="utf-8"></script>
 </body>
 </html>

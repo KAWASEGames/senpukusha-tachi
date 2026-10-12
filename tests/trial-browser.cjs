@@ -9,7 +9,7 @@ async function main() {
   const url = process.env.TRIAL_TEST_URL || pathToFileURL(path.resolve(__dirname, "../play.html")).href;
   const landingUrl = new URL("./index.html", url).href;
   try {
-    for (const width of [320, 433, 1440]) {
+    for (const width of [320, 433, 680, 1099, 1440]) {
       const context = await browser.newContext({ viewport: { width, height: 950 }, hasTouch: width < 680 });
       const page = await context.newPage();
       const errors = [];
@@ -59,6 +59,22 @@ async function main() {
       assert.ok(layout.minCardWidth >= 44);
       assert.ok(layout.minCardHeight >= 44);
       assert.equal(layout.external, "https://shiyutaku.com/home");
+      const checkTable = async () => {
+        const geometry = await page.locator("[data-trial-board]").evaluate((board) => {
+          const area = board.getBoundingClientRect();
+          const cards = [...board.children].filter((card) => !card.classList.contains("is-reserved-slot")).map((card) => card.getBoundingClientRect());
+          const seats = [...document.querySelectorAll(".trial-seat")].map((seat) => seat.getBoundingClientRect());
+          return {
+            contained: cards.every((card) => card.left >= area.left && card.right <= area.right && card.top >= area.top && card.bottom <= area.bottom),
+            overlaps: cards.some((a, index) => cards.slice(index + 1).some((b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top)),
+            seatsBeside: seats[0].right <= area.left && seats[1].left >= area.right
+          };
+        });
+        assert.equal(geometry.contained, true);
+        assert.equal(geometry.overlaps, false);
+        if (width >= 1100) assert.equal(geometry.seatsBeside, true);
+      };
+      await checkTable();
       if (width !== 320) {
         const screenshot = path.join(os.tmpdir(), `senpukusha-cpu-${width}.png`);
         const captureStyle = await page.addStyleTag({ content: ".site-header, .skip-link { visibility: hidden !important; } .trial-toolbar { position: static !important; }" });
@@ -112,6 +128,7 @@ async function main() {
       assert.equal(await page.locator("[data-trial-hand-count]").textContent(), "0枚");
       assert.equal(await shuffle.isDisabled(), true);
       assert.equal(await page.locator("[data-trial-shuffle-label]").textContent(), "残り0回");
+      await checkTable();
 
       // Mismatch hands the turn to CPU, whose two flips are then visible.
       const mismatch = await page.evaluate(() => {

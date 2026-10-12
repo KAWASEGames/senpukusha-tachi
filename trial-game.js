@@ -3,6 +3,12 @@
   const root = document.querySelector("[data-cpu-trial]");
   if (!root || !window.SenpukushaTrial) return;
   const { Game, TYPES } = window.SenpukushaTrial;
+  // Stable positions keep the scattered table readable without moving targets between turns.
+  const tablePositions = [
+    [9, 18, -30], [25, 19, -15], [42, 17, -48], [58, 18, 14], [75, 18, 70], [91, 19, 57],
+    [9, 50, 16], [25, 51, 31], [42, 49, -68], [58, 50, 64], [75, 50, -25], [91, 50, -21],
+    [9, 81, -31], [25, 82, 53], [75, 81, 73], [91, 82, 26], [42, 81, 15], [58, 81, 39]
+  ];
 
   const make = (tag, className, text) => {
     const node = document.createElement(tag);
@@ -316,6 +322,7 @@
     renderBoard() {
       const game = this.game;
       const slotCount = Math.max(18, game.board.length);
+      this.board.classList.toggle("has-reserve", game.board.length > 16);
       while (this.board.children.length < slotCount) {
         const button = make("button", "trial-card");
         button.type = "button";
@@ -329,6 +336,17 @@
         const empty = index >= game.board.length || (!setup && !game.board[index]);
         const peeking = game.effect?.targets.includes(index) && game.effect.kind === "peek";
         button.className = "trial-card";
+        let [x, y, angle] = tablePositions[index];
+        if (game.board.length === 16 && index >= 6 && index < 16) {
+          x = 10 + ((index - 6) % 5) * 20;
+          y = index < 11 ? 50 : 81;
+        } else if (game.board.length === 17 && index >= 12 && index < 17) x = 10 + (index - 12) * 20;
+        button.style.setProperty("--card-x", `${x}%`);
+        button.style.setProperty("--card-y", `${y}%`);
+        button.style.setProperty("--card-angle", `${angle}deg`);
+        button.style.setProperty("--mobile-x", `${14 + (index % 4) * 24}%`);
+        button.style.setProperty("--mobile-y", `${game.board.length > 16 ? 11 + Math.floor(index / 4) * 19 : 13 + Math.floor(index / 4) * 24}%`);
+        button.style.setProperty("--mobile-angle", `${[-9, 7, -5, 11, 6, -11, 9, -7][index % 8]}deg`);
         button.classList.toggle("is-face-up", !!type);
         button.classList.toggle("is-empty", empty);
         button.classList.toggle("is-placement", setup && !!type);
@@ -344,7 +362,6 @@
         button.title = type ? TYPES[type].effect || TYPES[type].name : `${index + 1}番`;
         button.replaceChildren();
         if (type) button.append(image(type));
-        else if (setup && !empty) button.append(make("span", "trial-drop-number", String(index + 1).padStart(2, "0")));
         else if (!empty) {
           const back = make("span", "trial-back");
           const logo = make("img");
@@ -399,6 +416,7 @@
         button.querySelector("[data-hand-note]").textContent = used ? "配置済み" : index === 2 ? "予備" : `配置${index + 1}`;
       });
       root.querySelector("[data-trial-hand-count]").textContent = `${count}枚`;
+      root.querySelector("[data-trial-cpu-reserve]").classList.toggle("is-used", !game.reserve[1]);
       const remaining = Number(game.reserve[0]) + Number(game.items[0].has("shuffle"));
       const shuffle = root.querySelector('[data-trial-action="shuffle"]');
       shuffle.disabled = this.paused || !game.atBoundary(0) || remaining === 0;
