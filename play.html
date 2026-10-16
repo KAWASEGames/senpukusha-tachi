@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css?v=20261012-04">
-  <link rel="stylesheet" href="./trial.css?v=20261012-04">
+  <link rel="stylesheet" href="./trial.css?v=20261016-01">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -49,7 +49,7 @@
       <div class="trial-arena">
         <aside class="trial-seat trial-seat-human" aria-label="あなた・赤">
           <div class="trial-player" data-trial-player="0">
-            <img data-trial-avatar="0" src="./素材/001-E-card-front.png" alt="あなたのエイリアン" width="816" height="1112">
+            <img data-trial-avatar="0" src="./素材/man.png" alt="あなた" width="1024" height="1024">
             <span>あなた・赤</span><strong><output data-trial-score="0">0</output><small> / 3点</small></strong>
           </div>
       <div class="trial-hand-area">
@@ -57,12 +57,12 @@
         <div class="trial-hand-controls">
           <div class="trial-hand" role="group" aria-label="赤のエイリアンの手札">
             <button class="trial-hand-card" type="button" data-trial-hand="0" aria-label="手札1・赤いエイリアンを配置" aria-pressed="false">
-              <img src="./素材/001-E-card-front.png" alt="" width="816" height="1112" draggable="false"><span data-hand-note>配置1</span>
+              <img src="./素材/001-E-card-front.png" alt="" width="816" height="1112" draggable="false"><span data-hand-note>配置</span>
             </button>
             <button class="trial-hand-card" type="button" data-trial-hand="1" aria-label="手札2・赤いエイリアンを配置" aria-pressed="false">
-              <img src="./素材/001-E-card-front.png" alt="" width="816" height="1112" draggable="false"><span data-hand-note>配置2</span>
+              <img src="./素材/001-E-card-front.png" alt="" width="816" height="1112" draggable="false"><span data-hand-note>配置</span>
             </button>
-            <button class="trial-hand-card" type="button" data-trial-hand="2" aria-label="予備のエイリアンを追加してシャッフル" disabled>
+            <button class="trial-hand-card is-reserve is-locked" type="button" data-trial-hand="2" aria-label="予備のエイリアンを追加してシャッフル" disabled>
               <img src="./素材/001-E-card-front.png" alt="" width="816" height="1112" draggable="false"><span data-hand-note>予備</span>
             </button>
           </div>
@@ -80,7 +80,7 @@
         </div>
         <aside class="trial-seat trial-seat-cpu" aria-label="CPU・青">
           <div class="trial-player" data-trial-player="1">
-            <img data-trial-avatar="1" src="./素材/002-E-card-front.png" alt="CPUのエイリアン" width="816" height="1112">
+            <img data-trial-avatar="1" src="./素材/woman.png" alt="CPU" width="1024" height="1024">
             <span>CPU・青</span><strong><output data-trial-score="1">0</output><small> / 3点</small></strong>
           </div>
           <div class="trial-cpu-hand" aria-label="CPUの予備カード">
@@ -126,6 +126,6 @@
     <div class="wrap footer-inner"><a href="./index.html">潜伏者たち</a><a href="./index.html#shiyutaku">サイトに戻る</a></div>
   </footer>
   <script src="./trial-engine.js?v=20261012-02" charset="utf-8"></script>
-  <script src="./trial-game.js?v=20261012-03" charset="utf-8"></script>
+  <script src="./trial-game.js?v=20261016-01" charset="utf-8"></script>
 </body>
 </html>

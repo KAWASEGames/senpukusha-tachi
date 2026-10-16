@@ -49,6 +49,13 @@ async function main() {
       assert.equal(await page.locator('[data-trial-action="advance"]').isVisible(), false);
       assert.equal(await page.locator("[data-trial-alien]").count(), 0);
       assert.equal(await page.locator("[data-trial-hand]").count(), 3);
+      assert.equal(await page.locator('[data-trial-avatar="0"]').getAttribute("src"), "./素材/man.png");
+      assert.equal(await page.locator('[data-trial-avatar="1"]').getAttribute("src"), "./素材/woman.png");
+      assert.equal(await page.locator("[data-trial-hand]:enabled").count(), 2);
+      assert.equal(await page.locator('[data-trial-hand="2"]').isDisabled(), true);
+      assert.ok(await page.locator('[data-trial-hand="2"]').evaluate((node) => Number(getComputedStyle(node).opacity) < .5));
+      assert.equal(await page.locator("[data-trial-phase]").textContent(), "準備：あと2枚配置");
+      assert.ok(await page.locator("[data-trial-phase]").evaluate((node) => parseFloat(getComputedStyle(node).fontSize) >= 24));
       const layout = await root.evaluate((node) => ({
         overflow: document.documentElement.scrollWidth > innerWidth,
         minCardWidth: Math.min(...[...node.querySelectorAll("[data-trial-slot]")].map((card) => card.getBoundingClientRect().width)),
@@ -106,12 +113,53 @@ async function main() {
         assert.equal(await page.locator(".trial-drag-ghost").count(), 0);
       };
       const tap = async (locator) => width < 680 ? locator.tap() : locator.click();
+      const moveCard = async (index, { cancel = false, edge = false } = {}) => {
+        await slot(index).evaluate((node) => node.scrollIntoView({ block: "center", behavior: "instant" }));
+        const before = await slot(index).boundingBox();
+        const area = await page.locator("[data-trial-board]").boundingBox();
+        const from = { x: before.x + before.width / 2, y: before.y + before.height / 2 };
+        const to = edge ? { x: area.x + 1, y: area.y + 1 } : { x: from.x + area.width * .05, y: from.y + area.height * .04 };
+        if (cdp) {
+          const touch = (point) => ({ ...point, radiusX: 4, radiusY: 4, force: 1, id: 1 });
+          await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [touch(from)] });
+          for (let step = 1; step <= 8; step++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [touch({ x: from.x + (to.x - from.x) * step / 8, y: from.y + (to.y - from.y) * step / 8 })] });
+          await cdp.send("Input.dispatchTouchEvent", { type: cancel ? "touchCancel" : "touchEnd", touchPoints: [] });
+        } else {
+          await page.mouse.move(from.x, from.y);
+          await page.mouse.down();
+          await page.mouse.move(to.x, to.y, { steps: 8 });
+          if (cancel) await slot(index).dispatchEvent("pointercancel", { pointerId: 1 });
+          await page.mouse.up();
+        }
+        assert.equal(await page.locator(".is-moving, .trial-drag-ghost").count(), 0);
+        assert.deepEqual(await page.evaluate(() => window.testTrial.selected), []);
+        if (!cancel) {
+          assert.ok(await slot(index).evaluate((node) => !!node.style.left && !!node.style.top));
+          const after = await slot(index).boundingBox();
+          assert.ok(Math.abs(after.x - before.x) + Math.abs(after.y - before.y) > 8);
+          assert.ok(after.x >= area.x && after.x + after.width <= area.x + area.width + 1);
+          assert.ok(after.y >= area.y && after.y + after.height <= area.y + area.height + 1);
+        }
+      };
+      // Moving a table card does not hide an alien or flip it, and survives rendering.
+      await moveCard(5);
+      const movedPosition = await slot(5).evaluate((node) => [node.style.left, node.style.top]);
+      await tap(hand(0));
+      assert.deepEqual(await slot(5).evaluate((node) => [node.style.left, node.style.top]), movedPosition);
+      await tap(hand(0));
+      await moveCard(5, { cancel: true });
+      assert.deepEqual(await slot(5).evaluate((node) => [node.style.left, node.style.top]), movedPosition);
+      await moveCard(5, { edge: true });
+      assert.deepEqual(await page.evaluate(() => window.testTrial.placement), []);
+      await page.locator('[data-trial-action="reset"]').click();
+      assert.equal(await slot(5).evaluate((node) => node.style.left), "");
       await tap(hand(0));
       assert.equal(await hand(0).getAttribute("aria-pressed"), "true");
       await tap(hand(0));
       assert.equal(await hand(0).getAttribute("aria-pressed"), "false");
       const deploy = async () => {
         await drag(0, 0);
+        assert.equal(await page.locator("[data-trial-phase]").textContent(), "準備：あと1枚配置");
         await tap(hand(1));
         assert.equal(await hand(1).getAttribute("aria-pressed"), "true");
         await tap(slot(3));
@@ -121,6 +169,15 @@ async function main() {
       };
       await deploy();
       assert.equal(await page.evaluate(() => window.testTrial.phase), "turn");
+      const identities = await page.evaluate(() => window.testTrial.board.map((card) => card?.type));
+      await moveCard(0);
+      assert.deepEqual(await page.evaluate(() => window.testTrial.board.map((card) => card?.type)), identities);
+      const playingPosition = await slot(0).evaluate((node) => [node.style.left, node.style.top]);
+      await page.locator('[data-trial-action="pause"]').click();
+      await page.locator('[data-trial-action="pause"]').click();
+      assert.deepEqual(await slot(0).evaluate((node) => [node.style.left, node.style.top]), playingPosition);
+      await page.locator('[data-trial-action="reset"]').click();
+      await deploy();
       const shuffle = page.locator('[data-trial-action="shuffle"]');
       assert.equal(await shuffle.isDisabled(), false);
       await shuffle.click();
