@@ -45,8 +45,9 @@
 
     prepareRound() {
       this.phase = "setup";
-      this.board = Array(16).fill(null);
+      this.board = this.shuffled(DECK.flatMap((type) => [type, type])).map((type) => ({ type, public: false }));
       this.placement = [];
+      this.cpuPlacement = [];
       this.selected = [];
       this.memory = [new Map(), new Map()];
       this.items = [new Set(), new Set()];
@@ -66,39 +67,39 @@
       return player === 0 ? "alien0" : "alien1";
     }
 
-    place(index) {
-      if (this.phase !== "setup" || !Number.isInteger(index) || index < 0 || index >= 16) return false;
-      if (this.placement.includes(index)) {
-        this.placement = this.placement.filter((value) => value !== index);
-      } else if (this.placement.length < 2) {
-        this.placement.push(index);
-      } else {
-        return false;
-      }
-      this.message = this.placement.length === 2 ? "配置完了。あなたから始めます。" : `あと${2 - this.placement.length}枚配置してください。`;
-      return true;
+    place() {
+      if (this.phase !== "setup" || this.placement.length >= 2) return null;
+      const index = this.board.length;
+      this.board.push({ type: this.alienType(0), public: false });
+      this.placement.push(index);
+      this.memory[0].set(index, this.alienType(0));
+      this.message = this.placement.length === 2 ? "2枚を追加しました。「配置を終える」でCPUへ交代します。" : `あと${2 - this.placement.length}枚追加してください。`;
+      return index;
     }
 
     startRound() {
       if (this.phase !== "setup" || this.placement.length !== 2) return false;
-      this.placement.forEach((index) => {
-        this.board[index] = { type: this.alienType(0), public: false };
-        this.memory[0].set(index, this.alienType(0));
-      });
-      const slots = this.shuffled(this.board.map((card, index) => index).filter((index) => !this.board[index]));
-      slots.slice(0, 2).forEach((index) => {
-        this.board[index] = { type: this.alienType(1), public: false };
-        this.memory[1].set(index, this.alienType(1));
-      });
-      const cards = this.shuffled(DECK.flatMap((type) => [type, type]));
-      slots.slice(2).forEach((index, order) => {
-        this.board[index] = { type: cards[order], public: false };
-      });
+      this.phase = "cpuSetup";
+      this.turn = 1;
+      this.announce("CPUがカードを2枚追加します。");
+      return true;
+    }
+
+    placeCpuAlien() {
+      if (this.phase !== "cpuSetup") return null;
+      const index = this.board.length;
+      this.board.push({ type: this.alienType(1), public: false });
+      this.cpuPlacement.push(index);
+      this.memory[1].set(index, this.alienType(1));
+      if (this.cpuPlacement.length < 2) {
+        this.message = "CPUが残りの1枚を追加しています。";
+        return index;
+      }
       this.turn = 0;
       this.turnNumber = 1;
       this.phase = "turn";
       this.announce("あなたの番です。カードを2枚めくってください。");
-      return true;
+      return index;
     }
 
     observe(index, viewers = [0, 1]) {
@@ -237,9 +238,7 @@
     addReserve(actor = 0) {
       if (!this.atBoundary(actor) || !this.reserve[actor]) return false;
       const card = { type: this.alienType(actor), public: false };
-      const empty = this.board.indexOf(null);
-      if (empty === -1) this.board.push(card);
-      else this.board[empty] = card;
+      this.board.push(card);
       this.reserve[actor] = false;
       this.shuffleBoard();
       this.announce(`${actor === 0 ? "あなた" : "CPU"}がエイリアンを追加。場をシャッフルしました。`);
@@ -298,7 +297,7 @@
     }
 
     visible(index, viewer = 0) {
-      if (this.phase === "setup") return this.placement.includes(index) ? this.alienType(0) : null;
+      if (["setup", "cpuSetup"].includes(this.phase)) return null;
       const card = this.board[index];
       if (!card) return null;
       if (["roundEnd", "matchEnd"].includes(this.phase) || card.public || this.selected.includes(index)) return card.type;

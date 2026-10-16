@@ -11,9 +11,11 @@ function seeded(seed = 1) {
 
 function fixture(actor = 0) {
   const game = new Game({ random: seeded() });
-  game.place(0);
-  game.place(1);
+  game.place();
+  game.place();
   game.startRound();
+  game.placeCpuAlien();
+  game.placeCpuAlien();
   game.board = [...DECK.flatMap((type) => [type, type]), "alien0", "alien0", "alien1", "alien1"].map((type) => ({ type, public: false }));
   game.memory = [new Map([[12, "alien0"], [13, "alien0"]]), new Map([[14, "alien1"], [15, "alien1"]])];
   game.turn = actor;
@@ -32,24 +34,39 @@ test("players are fixed to red and blue, and the human starts", () => {
   const game = new Game({ random: seeded(7), alien: 3 });
   assert.equal(game.alienType(0), "alien0");
   assert.equal(game.alienType(1), "alien1");
-  game.place(0);
-  game.place(5);
+  game.place();
+  game.place();
   game.startRound();
+  game.placeCpuAlien();
+  game.placeCpuAlien();
   assert.equal(game.turn, 0);
   assert.equal(game.board.some((card) => card.type === "alien2" || card.type === "alien3"), false);
 });
 
-test("setup requires two distinct positions and creates eight pairs", () => {
+test("setup appends two hidden cards without replacing the original twelve, then waits for CPU placement", () => {
   const game = new Game({ random: seeded() });
+  const originalCards = [...game.board];
+  assert.equal(game.board.length, 12);
+  assert.equal(game.board.some((card) => card.type.startsWith("alien")), false);
   assert.equal(game.startRound(), false);
-  assert.equal(game.place(-1), false);
-  game.place(2);
-  game.place(2);
-  assert.equal(game.placement.length, 0);
-  game.place(2);
-  game.place(7);
-  assert.equal(game.place(8), false);
+  assert.equal(game.place(), 12);
+  assert.equal(game.board.length, 13);
+  assert.equal(game.visible(12), null);
+  assert.equal(game.startRound(), false);
+  assert.equal(game.place(), 13);
+  assert.equal(game.place(), null);
+  assert.equal(game.board.length, 14);
+  assert.deepEqual(game.board.slice(0, 12), originalCards);
+  assert.equal(game.memory[1].size, 0);
   assert.equal(game.startRound(), true);
+  assert.equal(game.phase, "cpuSetup");
+  assert.equal(game.flip(0), false);
+  assert.equal(game.placeCpuAlien(), 14);
+  assert.equal(game.visible(14), null);
+  assert.equal(game.board.length, 15);
+  assert.equal(game.placeCpuAlien(), 15);
+  assert.equal(game.placeCpuAlien(), null);
+  assert.equal(game.phase, "turn");
   assert.equal(game.board.length, 16);
   for (const type of [...DECK, "alien0", "alien1"]) assert.equal(game.board.filter((card) => card.type === type).length, 2);
   assert.equal(game.memory[1].size, 2);
@@ -221,9 +238,11 @@ test("twenty simulated matches complete without stuck phases or invalid scores",
     let actions = 0;
     while (game.phase !== "matchEnd" && actions++ < 1500) {
       if (game.phase === "setup") {
-        game.place(0);
-        game.place(7);
+        game.place();
+        game.place();
         game.startRound();
+      } else if (game.phase === "cpuSetup") {
+        game.placeCpuAlien();
       } else if (game.phase === "roundEnd") game.nextRound();
       else if (game.phase === "resolving") game.resolve();
       else if (game.phase === "review") game.finishEffect();

@@ -45,7 +45,10 @@ async function main() {
       await page.evaluate(() => document.fonts.ready);
       await page.waitForFunction(() => [...document.querySelectorAll("[data-cpu-trial] img[src]")].filter((img) => img.getBoundingClientRect().height > 0).every((img) => img.complete && img.naturalWidth > 0));
       assert.equal(await root.isVisible(), true);
-      assert.equal(await page.locator("[data-trial-slot]").count(), 18);
+      assert.equal(await page.locator("[data-trial-slot]").count(), 12);
+      assert.equal(await page.locator(".trial-cpu-hand").count(), 0);
+      assert.equal(await page.locator(".trial-external").count(), 0);
+      assert.equal(await page.locator('[data-trial-action="finish-setup"]').isDisabled(), true);
       assert.equal(await page.locator('[data-trial-action="advance"]').isVisible(), false);
       assert.equal(await page.locator("[data-trial-alien]").count(), 0);
       assert.equal(await page.locator("[data-trial-hand]").count(), 3);
@@ -59,14 +62,12 @@ async function main() {
       const layout = await root.evaluate((node) => ({
         overflow: document.documentElement.scrollWidth > innerWidth,
         minCardWidth: Math.min(...[...node.querySelectorAll("[data-trial-slot]")].map((card) => card.getBoundingClientRect().width)),
-        minCardHeight: Math.min(...[...node.querySelectorAll("[data-trial-slot]")].map((card) => card.getBoundingClientRect().height)),
-        external: document.querySelector(".trial-external").href
+        minCardHeight: Math.min(...[...node.querySelectorAll("[data-trial-slot]")].map((card) => card.getBoundingClientRect().height))
       }));
       assert.equal(layout.overflow, false);
       assert.ok(layout.minCardWidth >= 44);
       assert.ok(layout.minCardHeight >= 44);
-      assert.equal(layout.external, "https://shiyutaku.com/home");
-      const checkTable = async () => {
+      const checkTable = async (allowOverlap = false) => {
         const geometry = await page.locator("[data-trial-board]").evaluate((board) => {
           const area = board.getBoundingClientRect();
           const cards = [...board.children].filter((card) => !card.classList.contains("is-reserved-slot")).map((card) => card.getBoundingClientRect());
@@ -78,7 +79,7 @@ async function main() {
           };
         });
         assert.equal(geometry.contained, true);
-        assert.equal(geometry.overlaps, false);
+        if (!allowOverlap) assert.equal(geometry.overlaps, false);
         if (width >= 1100) assert.equal(geometry.seatsBeside, true);
       };
       await checkTable();
@@ -93,11 +94,12 @@ async function main() {
       const hand = (index) => page.locator(`[data-trial-hand="${index}"]`);
       const cdp = width < 680 ? await context.newCDPSession(page) : null;
       const drag = async (handIndex, slotIndex) => {
+        const before = await page.evaluate(() => window.testTrial.board.map((card) => card?.type));
         await hand(handIndex).scrollIntoViewIfNeeded();
         const source = await hand(handIndex).boundingBox();
-        const target = await slot(slotIndex).boundingBox();
+        const target = typeof slotIndex === "number" ? await slot(slotIndex).boundingBox() : await page.locator("[data-trial-board]").boundingBox();
         const from = { x: source.x + source.width / 2, y: source.y + source.height / 3 };
-        const to = { x: target.x + target.width / 2, y: target.y + target.height / 2 };
+        const to = { x: target.x + target.width * (slotIndex.x ?? .5), y: target.y + target.height * (slotIndex.y ?? .5) };
         if (cdp) {
           const touch = (point) => ({ ...point, radiusX: 4, radiusY: 4, force: 1, id: 1 });
           await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [touch(from)] });
@@ -109,7 +111,14 @@ async function main() {
           await page.mouse.move(to.x, to.y, { steps: 8 });
           await page.mouse.up();
         }
-        assert.equal(await page.evaluate(({ h, s }) => window.testTrial.placement.includes(s), { h: handIndex, s: slotIndex }), true);
+        assert.equal(await page.evaluate((index) => window.testTrial.placement.includes(index), before.length), true);
+        assert.equal(await page.locator("[data-trial-slot]").count(), before.length + 1);
+        assert.deepEqual(await page.evaluate((count) => window.testTrial.board.slice(0, count).map((card) => card?.type), before.length), before);
+        assert.equal(await slot(before.length).locator(".trial-back").count(), 1);
+        assert.equal(await slot(before.length).locator("img[src*='001-E-card']").count(), 0);
+        const placed = await slot(before.length).boundingBox();
+        assert.ok(Math.abs(placed.x + placed.width / 2 - to.x) < 2);
+        assert.ok(Math.abs(placed.y + placed.height / 2 - to.y) < 2);
         assert.equal(await page.locator(".trial-drag-ghost").count(), 0);
       };
       const tap = async (locator) => width < 680 ? locator.tap() : locator.click();
@@ -153,6 +162,8 @@ async function main() {
       assert.deepEqual(await page.evaluate(() => window.testTrial.placement), []);
       await page.locator('[data-trial-action="reset"]').click();
       assert.equal(await slot(5).evaluate((node) => node.style.left), "");
+      await drag(0, { x: .5, y: .34 });
+      await page.locator('[data-trial-action="reset"]').click();
       await tap(hand(0));
       assert.equal(await hand(0).getAttribute("aria-pressed"), "true");
       await tap(hand(0));
@@ -162,20 +173,34 @@ async function main() {
         assert.equal(await page.locator("[data-trial-phase]").textContent(), "準備：あと1枚配置");
         await tap(hand(1));
         assert.equal(await hand(1).getAttribute("aria-pressed"), "true");
-        await tap(slot(3));
+        const board = page.locator("[data-trial-board]");
+        const area = await board.boundingBox();
+        const point = { position: { x: area.width * .7, y: area.height * .34 } };
+        if (width < 680) await board.tap(point);
+        else await board.click(point);
+        assert.equal(await page.locator("[data-trial-slot]").count(), 14);
+        assert.equal(await slot(13).locator(".trial-back").count(), 1);
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        assert.equal(await page.evaluate(() => window.testTrial.phase), "setup");
+        assert.equal(await page.evaluate(() => window.testTrial.board.some((card) => card.type === 'alien1')), false);
+        assert.equal(await page.locator('[data-trial-action="finish-setup"]').isDisabled(), false);
+        if (roundCapture++ === 0 && width !== 320) await root.screenshot({ path: path.join(os.tmpdir(), `senpukusha-placed-${width}.png`) });
+        await page.locator('[data-trial-action="finish-setup"]').click();
         await page.waitForFunction(() => window.testTrial.phase === "turn");
+        assert.equal(await page.locator("[data-trial-slot]").count(), 16);
         assert.equal(await page.evaluate(() => window.testTrial.turn), 0);
         assert.equal(await page.locator("[data-trial-hand-count]").textContent(), "1枚");
       };
+      let roundCapture = 0;
       await deploy();
       assert.equal(await page.evaluate(() => window.testTrial.phase), "turn");
       const identities = await page.evaluate(() => window.testTrial.board.map((card) => card?.type));
-      await moveCard(0);
+      await moveCard(12);
       assert.deepEqual(await page.evaluate(() => window.testTrial.board.map((card) => card?.type)), identities);
-      const playingPosition = await slot(0).evaluate((node) => [node.style.left, node.style.top]);
+      const playingPosition = await slot(12).evaluate((node) => [node.style.left, node.style.top]);
       await page.locator('[data-trial-action="pause"]').click();
       await page.locator('[data-trial-action="pause"]').click();
-      assert.deepEqual(await slot(0).evaluate((node) => [node.style.left, node.style.top]), playingPosition);
+      assert.deepEqual(await slot(12).evaluate((node) => [node.style.left, node.style.top]), playingPosition);
       await page.locator('[data-trial-action="reset"]').click();
       await deploy();
       const shuffle = page.locator('[data-trial-action="shuffle"]');
@@ -185,13 +210,13 @@ async function main() {
       assert.equal(await page.locator("[data-trial-hand-count]").textContent(), "0枚");
       assert.equal(await shuffle.isDisabled(), true);
       assert.equal(await page.locator("[data-trial-shuffle-label]").textContent(), "残り0回");
-      await checkTable();
+      await checkTable(true);
 
       // Mismatch hands the turn to CPU, whose two flips are then visible.
       const mismatch = await page.evaluate(() => {
         const game = window.testTrial;
-        const a = game.board.findIndex((card) => !card.type.startsWith("alien"));
-        const b = game.board.findIndex((card, index) => index !== a && card.type !== game.board[a].type);
+        const a = game.board.findIndex((card, index) => index > 0 && index < 12 && !card.type.startsWith("alien"));
+        const b = game.board.findIndex((card, index) => index > 0 && index < 12 && index !== a && card.type !== game.board[a].type);
         return [a, b];
       });
       await slot(mismatch[0]).click();

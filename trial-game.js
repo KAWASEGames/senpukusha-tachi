@@ -4,11 +4,7 @@
   if (!root || !window.SenpukushaTrial) return;
   const { Game, TYPES } = window.SenpukushaTrial;
   // Default positions stay stable; user moves are stored separately for the current round.
-  const tablePositions = [
-    [9, 18, -30], [25, 19, -15], [42, 17, -48], [58, 18, 14], [75, 18, 70], [91, 19, 57],
-    [9, 50, 16], [25, 51, 31], [42, 49, -68], [58, 50, 64], [75, 50, -25], [91, 50, -21],
-    [9, 81, -31], [25, 82, 53], [75, 81, 73], [91, 82, 26], [42, 81, 15], [58, 81, 39]
-  ];
+  const cardAngles = [-30, -15, -48, 14, 70, 57, 16, 31, -68, 64, -25, -21, -31, 53, 73, 26, 15, 39];
 
   const make = (tag, className, text) => {
     const node = document.createElement(tag);
@@ -59,6 +55,14 @@
       root.addEventListener("pointerdown", (event) => this.startDrag(event));
       root.addEventListener("pointermove", (event) => this.moveDrag(event));
       root.addEventListener("pointerup", (event) => this.endDrag(event));
+      this.board.addEventListener("keydown", (event) => {
+        if (event.target !== this.board || this.selectedHand === null || !["Enter", " "].includes(event.key)) return;
+        event.preventDefault();
+        const area = this.board.getBoundingClientRect();
+        this.placeHand(this.selectedHand, this.boardPoint(area.left + area.width / 2, area.top + area.height / 2));
+        this.render();
+        this.drive();
+      });
       const interruptDrag = () => {
         if (!this.drag) return;
         if (this.drag.moved) this.suppressedClick = { hand: this.drag.hand, slot: this.drag.slot, boardDrag: true, until: performance.now() + 350 };
@@ -96,26 +100,51 @@
       this.render();
     }
 
-    placeHand(hand, index) {
+    placeHand(hand, position) {
       const game = this.game;
-      if (game.phase !== "setup" || hand < 0 || hand > 1 || index < 0 || index >= 16) return false;
-      const previous = this.handPositions[hand];
-      if (previous === index) return true;
-      if (game.placement.includes(index)) return false;
+      if (!position || this.paused) return false;
+      let index;
+      if (hand === 2) {
+        index = game.board.length;
+        if (!game.addReserve()) return false;
+      } else {
+        if (game.phase !== "setup" || hand < 0 || hand > 1 || this.handPositions[hand] !== null) return false;
+        index = game.place();
+        if (index === null) return false;
+        this.handPositions[hand] = index;
+      }
       this.clearTimer();
-      if (previous !== null) game.place(previous);
-      game.place(index);
-      this.handPositions[hand] = index;
+      this.cardPositions.set(index, { ...position, z: ++this.topCard });
       this.selectedHand = null;
       return true;
     }
 
-    dropTarget(x, y) {
-      const slot = document.elementFromPoint(x, y)?.closest("[data-trial-slot]");
-      if (!slot || !root.contains(slot)) return null;
-      const index = Number(slot.dataset.trialSlot);
-      if (this.game.phase === "setup" && (index >= 16 || this.game.placement.includes(index))) return null;
-      return slot;
+    boardPoint(x, y) {
+      const area = this.board.getBoundingClientRect();
+      if (x < area.left || x > area.right || y < area.top || y > area.bottom) return null;
+      return { x: (x - area.left) / area.width * 100, y: (y - area.top) / area.height * 100 };
+    }
+
+    placeCpuCard() {
+      const index = this.game.placeCpuAlien();
+      if (index === null) return;
+      this.render();
+      const card = this.board.children[index];
+      const area = this.board.getBoundingClientRect();
+      const rect = card.getBoundingClientRect();
+      const occupied = [...this.board.children].filter((other) => other !== card && !other.classList.contains("is-empty")).map((other) => other.getBoundingClientRect());
+      let best;
+      // CPU placement uses visible geometry only, never hidden card identities.
+      for (const y of [34, 66, 50, 18, 82]) {
+        for (const x of [50, 25, 75, 12, 88]) {
+          const left = area.left + area.width * x / 100 - rect.width / 2;
+          const top = area.top + area.height * y / 100 - rect.height / 2;
+          if (left < area.left + 4 || top < area.top + 4 || left + rect.width > area.right - 4 || top + rect.height > area.bottom - 4) continue;
+          const overlap = occupied.reduce((total, other) => total + Math.max(0, Math.min(left + rect.width, other.right) - Math.max(left, other.left)) * Math.max(0, Math.min(top + rect.height, other.bottom) - Math.max(top, other.top)), 0);
+          if (!best || overlap < best.overlap) best = { x, y, overlap };
+        }
+      }
+      this.cardPositions.set(index, { x: best?.x ?? 50, y: best?.y ?? 50, z: ++this.topCard });
     }
 
     startDrag(event) {
@@ -132,7 +161,7 @@
         offsetX: event.clientX - (rect.left + rect.width / 2),
         offsetY: event.clientY - (rect.top + rect.height / 2),
         originalPosition: this.cardPositions.get(slot),
-        moved: false, ghost: null, target: null
+        moved: false, ghost: null
       };
       try { source.setPointerCapture(event.pointerId); } catch { /* Synthetic pointer events may not own a pointer. */ }
     }
@@ -192,9 +221,7 @@
       }
       drag.ghost.style.left = `${drag.x}px`;
       drag.ghost.style.top = `${drag.y}px`;
-      drag.target?.classList.remove("is-drop-hover");
-      drag.target = this.dropTarget(drag.x, drag.y);
-      drag.target?.classList.add("is-drop-hover");
+      this.board.classList.toggle("is-drop-hover", !!this.boardPoint(drag.x, drag.y));
     }
 
     autoScrollDrag() {
@@ -213,7 +240,7 @@
       if (this.dragFrame !== null) window.cancelAnimationFrame(this.dragFrame);
       this.dragFrame = null;
       drag?.ghost?.remove();
-      drag?.target?.classList.remove("is-drop-hover");
+      this.board.classList.remove("is-drop-hover");
       drag?.source.classList.remove("is-drag-source");
       drag?.source.classList.remove("is-moving");
       if (restore && drag?.slot !== null && drag?.slot !== undefined && drag.moved) {
@@ -231,26 +258,22 @@
       drag.x = event.clientX;
       drag.y = event.clientY;
       if (drag.moved) this.updateDragTarget();
-      const target = drag.moved && drag.slot === null ? this.dropTarget(event.clientX, event.clientY) : null;
+      const position = drag.moved && drag.slot === null ? this.boardPoint(event.clientX, event.clientY) : null;
       this.cancelDrag(false);
       if (!drag.moved) {
         // Touch capture can suppress the native click after dragging another card.
         if (event.pointerType !== "mouse") {
           event.preventDefault();
           this.suppressedClick = null;
-          drag.source.click();
+          drag.source.dispatchEvent(new MouseEvent("click", { bubbles: true, detail: 1, clientX: event.clientX, clientY: event.clientY }));
           this.suppressedClick = { hand: drag.hand, slot: drag.slot, phase: this.game.phase, until: performance.now() + 350 };
         }
         this.drive();
         return;
       }
       event.preventDefault();
-      const index = target ? Number(target.dataset.trialSlot) : null;
-      this.suppressedClick = { hand: drag.hand, slot: drag.slot ?? index, boardDrag: drag.slot !== null, phase: this.game.phase, until: performance.now() + 350 };
-      if (index !== null) {
-        if (drag.hand === 2) this.game.addReserve();
-        else this.placeHand(drag.hand, index);
-      }
+      this.suppressedClick = { hand: drag.hand, slot: drag.slot, board: !!position, boardDrag: drag.slot !== null, phase: this.game.phase, until: performance.now() + 350 };
+      if (position) this.placeHand(drag.hand, position);
       this.render();
       this.drive();
     }
@@ -274,8 +297,8 @@
     drive() {
       const game = this.game;
       if (this.paused || this.drag) return;
-      if (game.phase === "setup" && game.placement.length === 2) {
-        this.schedule(() => game.startRound(), 900);
+      if (game.phase === "cpuSetup") {
+        this.schedule(() => this.placeCpuCard(), 1000);
       } else if (game.phase === "resolving") {
         this.schedule(() => game.resolve(), 1300);
       } else if (game.turn === 1 && game.phase === "review") {
@@ -305,7 +328,7 @@
     onClick(event) {
       const hand = event.target.closest("[data-trial-hand]");
       const slot = event.target.closest("[data-trial-slot]");
-      if (this.suppressedClick && (this.suppressedClick.boardDrag || this.game.phase === this.suppressedClick.phase) && performance.now() < this.suppressedClick.until && ((hand && Number(hand.dataset.trialHand) === this.suppressedClick.hand) || (slot && Number(slot.dataset.trialSlot) === this.suppressedClick.slot))) return;
+      if (this.suppressedClick && (this.suppressedClick.boardDrag || this.game.phase === this.suppressedClick.phase) && performance.now() < this.suppressedClick.until && ((hand && Number(hand.dataset.trialHand) === this.suppressedClick.hand) || (slot && Number(slot.dataset.trialSlot) === this.suppressedClick.slot) || (this.suppressedClick.board && this.board.contains(event.target)))) return;
       const inspect = event.target.closest("[data-trial-inspect]");
       if (inspect) {
         this.inspect(inspect.dataset.trialInspect);
@@ -337,23 +360,23 @@
         if (this.paused) return;
         if (hand) {
           const index = Number(hand.dataset.trialHand);
-          if (this.game.phase === "setup" && index < 2 && this.handPositions[index] === null) {
+          if ((this.game.phase === "setup" && index < 2 && this.handPositions[index] === null) || (index === 2 && this.game.atBoundary(0) && this.game.reserve[0])) {
             this.selectedHand = this.selectedHand === index ? null : index;
             this.game.message = this.selectedHand !== null ? "カードを置く場所を選んでください。" : "手札の赤いカードを2枚、好きな場所へ配置してください。";
-          } else if (index === 2) this.game.addReserve();
+          }
+        }
+        else if (this.board.contains(event.target) && this.selectedHand !== null) {
+          const area = this.board.getBoundingClientRect();
+          const keyboard = event.detail === 0 && !event.clientX && !event.clientY;
+          this.placeHand(this.selectedHand, this.boardPoint(keyboard ? area.left + area.width / 2 : event.clientX, keyboard ? area.top + area.height / 2 : event.clientY));
         }
         else if (slot) {
           const index = Number(slot.dataset.trialSlot);
-          if (this.game.phase === "setup") {
-            if (this.selectedHand !== null) this.placeHand(this.selectedHand, index);
-            else if (this.game.placement.includes(index)) {
-              this.clearTimer();
-              this.game.place(index);
-              this.handPositions[this.handPositions.indexOf(index)] = null;
-            }
-          }
-          else if (this.game.phase === "effect") this.game.selectEffect(index);
+          if (this.game.phase === "effect") this.game.selectEffect(index);
           else this.game.flip(index);
+        } else if (action === "finish-setup") {
+          this.selectedHand = null;
+          this.game.startRound();
         } else if (action === "shuffle") {
           if (!this.game.addReserve()) this.game.useShuffle();
         }
@@ -396,8 +419,7 @@
 
     renderBoard() {
       const game = this.game;
-      const slotCount = Math.max(18, game.board.length);
-      this.board.classList.toggle("has-reserve", game.board.length > 16);
+      const slotCount = game.board.length;
       while (this.board.children.length < slotCount) {
         const button = make("button", "trial-card");
         button.type = "button";
@@ -411,30 +433,23 @@
         const empty = index >= game.board.length || (!setup && !game.board[index]);
         const peeking = game.effect?.targets.includes(index) && game.effect.kind === "peek";
         button.className = "trial-card";
-        let [x, y, angle] = tablePositions[index];
-        if (game.board.length === 16 && index >= 6 && index < 16) {
-          x = 10 + ((index - 6) % 5) * 20;
-          y = index < 11 ? 50 : 81;
-        } else if (game.board.length === 17 && index >= 12 && index < 17) x = 10 + (index - 12) * 20;
+        const angle = cardAngles[index] ?? 0;
+        const x = index < 12 ? 12 + (index % 4) * 25 : 50;
+        const y = index < 12 ? 18 + Math.floor(index / 4) * 32 : 50;
         button.style.setProperty("--card-x", `${x}%`);
         button.style.setProperty("--card-y", `${y}%`);
         button.style.setProperty("--card-angle", `${angle}deg`);
         button.style.setProperty("--mobile-x", `${14 + (index % 4) * 24}%`);
-        button.style.setProperty("--mobile-y", `${game.board.length > 16 ? 11 + Math.floor(index / 4) * 19 : 13 + Math.floor(index / 4) * 24}%`);
+        button.style.setProperty("--mobile-y", `${index < 12 ? 17 + Math.floor(index / 4) * 32 : 50}%`);
         button.style.setProperty("--mobile-angle", `${[-9, 7, -5, 11, 6, -11, 9, -7][index % 8]}deg`);
         button.classList.toggle("is-face-up", !!type);
         button.classList.toggle("is-empty", empty);
-        button.classList.toggle("is-placement", setup && !!type);
-        button.classList.toggle("is-drop-slot", setup && !type && !empty);
-        button.classList.toggle("is-reserved-slot", index >= game.board.length);
         button.classList.toggle("is-peeking", !!peeking);
-        let enabled = (setup && !empty) || game.canFlip(index, 0) || (game.phase === "effect" && game.turn === 0 && game.effectChoices().includes(index));
-        if (setup && game.placement.length === 2 && !type) enabled = false;
+        const enabled = (setup && !empty) || game.canFlip(index, 0) || (game.phase === "effect" && game.turn === 0 && game.effectChoices().includes(index));
         button.disabled = this.paused || empty;
         button.setAttribute("aria-disabled", String(!enabled || this.paused));
-        button.setAttribute("aria-label", `${index + 1}番：${type ? TYPES[type].name : empty ? "獲得済み" : setup ? "エイリアンを隠す場所" : "裏向きのカード"}`);
-        if (setup) button.setAttribute("aria-pressed", String(!!type));
-        else button.removeAttribute("aria-pressed");
+        button.setAttribute("aria-label", `${index + 1}番：${type ? TYPES[type].name : empty ? "獲得済み" : "裏向きのカード"}`);
+        button.removeAttribute("aria-pressed");
         button.title = type ? TYPES[type].effect || TYPES[type].name : `${index + 1}番`;
         this.applyCardPosition(button, index);
         button.replaceChildren();
@@ -495,7 +510,6 @@
         button.querySelector("[data-hand-note]").textContent = used ? "配置済" : index === 2 ? "予備" : "配置";
       });
       root.querySelector("[data-trial-hand-count]").textContent = `${count}枚`;
-      root.querySelector("[data-trial-cpu-reserve]").classList.toggle("is-used", !game.reserve[1]);
       const remaining = Number(game.reserve[0]) + Number(game.items[0].has("shuffle"));
       const shuffle = root.querySelector('[data-trial-action="shuffle"]');
       shuffle.disabled = this.paused || !game.atBoundary(0) || remaining === 0;
@@ -507,6 +521,7 @@
       const game = this.game;
       const labels = {
         setup: game.placement.length === 2 ? "準備完了" : `準備：あと${2 - game.placement.length}枚配置`,
+        cpuSetup: "CPUが配置中",
         turn: game.turn === 0 ? `あなたの番：あと${2 - game.selected.length}枚` : "CPUの番",
         resolving: "カードを照合中",
         effect: "カードの効果",
@@ -522,6 +537,9 @@
         root.querySelector(`[data-trial-score="${player}"]`).textContent = game.scores[player];
         root.querySelector(`[data-trial-player="${player}"]`).classList.toggle("is-active", game.turn === player && !["setup", "roundEnd", "matchEnd"].includes(game.phase));
       }
+      const finishSetup = root.querySelector('[data-trial-action="finish-setup"]');
+      finishSetup.hidden = game.phase !== "setup";
+      finishSetup.disabled = this.paused || game.placement.length !== 2;
       const advance = root.querySelector('[data-trial-action="advance"]');
       const primary = { review: "続ける", roundEnd: "次のラウンド", matchEnd: "もう一度遊ぶ" };
       advance.hidden = !primary[game.phase] || (game.phase === "review" && game.turn === 1);

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css?v=20261012-04">
-  <link rel="stylesheet" href="./trial.css?v=20261016-01">
+  <link rel="stylesheet" href="./trial.css?v=20261016-02">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -69,11 +69,12 @@
           <button class="trial-shuffle" type="button" data-trial-action="shuffle" disabled>
             <img src="./assets/icons/shuffle.svg" alt="" width="20" height="20"><span>シャッフル<small data-trial-shuffle-label>配置後に使用</small></span>
           </button>
+          <button class="trial-command" type="button" data-trial-action="finish-setup" disabled>配置を終える</button>
         </div>
       </div>
         </aside>
         <div class="trial-table-area">
-          <div class="trial-board" data-trial-board role="group" aria-label="場のカード"></div>
+          <div class="trial-board" data-trial-board role="group" aria-label="場のカード" tabindex="0"></div>
           <div class="trial-actions">
             <button class="trial-command" type="button" data-trial-action="advance" hidden>続ける</button>
           </div>
@@ -82,9 +83,6 @@
           <div class="trial-player" data-trial-player="1">
             <img data-trial-avatar="1" src="./素材/woman.png" alt="CPU" width="1024" height="1024">
             <span>CPU・青</span><strong><output data-trial-score="1">0</output><small> / 3点</small></strong>
-          </div>
-          <div class="trial-cpu-hand" aria-label="CPUの予備カード">
-            <span>手札</span><img src="./素材/002-E-card-front.png" alt="青の予備カード" width="816" height="1112" data-trial-cpu-reserve>
           </div>
         </aside>
       </div>
@@ -101,7 +99,7 @@
         <summary>試遊ルール</summary>
         <ul>
           <li>16枚のショート版。イベント4種類・アイテム2種類で、先に3点を取った方の勝利です。</li>
-          <li>あなたは赤、CPUは青。赤い手札2枚を好きな場所へドラッグして配置すると対戦開始です。手札と置き場所の順にタップしても配置できます。</li>
+          <li>あなたは赤、CPUは青。通常カード12枚の場に、赤い手札2枚をドラッグして裏向きで追加します。「配置を終える」でCPUが2枚追加し、対戦開始です。手札と場の順にタップしても追加できます。</li>
           <li>2枚をタップしてめくります。同じカードなら効果が発動し、そろわなければ相手の番です。追加ターン・スキップ以外は効果の処理後に手番を交代します。</li>
           <li>相手のエイリアンのペアを発見すると1点。自分のペアをそろえると相手に1点入り、ラウンド終了です。</li>
           <li>シャッフルボタンは、自分の手番の最初に使えます。予備の赤カードを場へ追加してシャッフルするのは1ラウンド1回。アイテムを獲得すると、さらに1回使えます。全体公開されたカードは表向きを保ちます。</li>
@@ -118,14 +116,13 @@
         <a href="./index.html#howto">遊び方</a>
         <a href="./index.html#cards">カードについて</a>
         <a href="./index.html#faq">よくある質問</a>
-        <a class="button button-dark trial-external" href="https://shiyutaku.com/home" target="_blank" rel="noopener">試遊卓で遊ぶ <img src="./assets/icons/external-link.svg" alt="" width="18" height="18"><span class="sr-only">（外部サイト、新しいタブ）</span></a>
       </nav>
     </div>
   </main>
   <footer class="footer">
     <div class="wrap footer-inner"><a href="./index.html">潜伏者たち</a><a href="./index.html#shiyutaku">サイトに戻る</a></div>
   </footer>
-  <script src="./trial-engine.js?v=20261012-02" charset="utf-8"></script>
-  <script src="./trial-game.js?v=20261016-01" charset="utf-8"></script>
+  <script src="./trial-engine.js?v=20261016-02" charset="utf-8"></script>
+  <script src="./trial-game.js?v=20261016-02" charset="utf-8"></script>
 </body>
 </html>
