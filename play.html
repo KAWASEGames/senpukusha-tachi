@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CPU対戦 | 潜伏者たち</title>
-  <meta name="description" content="潜伏者たちのCPU対戦。16枚・3点先取のショート版をブラウザで試遊できます。">
+  <title>テストプレイ準備中 | 潜伏者たち</title>
+  <meta name="description" content="潜伏者たちのテストプレイは現在準備中です。公開再開までお待ちください。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=20261012-04">
-  <link rel="stylesheet" href="./trial.css?v=20261016-02">
+  <link rel="stylesheet" href="./style.css?v=20261022-01">
+  <link rel="stylesheet" href="./trial.css?v=20261022-01">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ移動</a>
@@ -23,6 +23,14 @@
   </header>
   <main class="trial-page" id="main">
     <div class="wrap">
+      <section class="trial-maintenance" aria-labelledby="trial-maintenance-title">
+        <p class="eyebrow">Test play</p>
+        <h1 id="trial-maintenance-title">準備中</h1>
+        <p>テストプレイは一時公開を停止しています。<br>再開までお待ちください。</p>
+        <a class="button button-dark" href="./index.html#shiyutaku">公式サイトに戻る</a>
+      </section>
+      <!-- Keep the paused game inert so it can be restored when testing reopens. -->
+      <template id="paused-trial">
       <h1 class="sr-only">潜伏者たち CPU対戦</h1>
     <section class="cpu-trial" data-cpu-trial aria-label="CPU対戦" hidden>
       <header class="trial-toolbar">
@@ -111,7 +119,9 @@
         <img class="trial-dialog-image" data-trial-dialog-image alt="" width="816" height="1112">
       </dialog>
     </section>
-      <noscript><p>CPU対戦にはJavaScriptが必要です。試遊卓でも遊べます。</p></noscript>
+        <script src="./trial-engine.js?v=20261016-02" charset="utf-8"></script>
+        <script src="./trial-game.js?v=20261016-02" charset="utf-8"></script>
+      </template>
       <nav class="trial-page-links" aria-label="試遊関連リンク">
         <a href="./index.html#howto">遊び方</a>
         <a href="./index.html#cards">カードについて</a>
@@ -122,7 +132,5 @@
   <footer class="footer">
     <div class="wrap footer-inner"><a href="./index.html">潜伏者たち</a><a href="./index.html#shiyutaku">サイトに戻る</a></div>
   </footer>
-  <script src="./trial-engine.js?v=20261016-02" charset="utf-8"></script>
-  <script src="./trial-game.js?v=20261016-02" charset="utf-8"></script>
 </body>
 </html>

@@ -2,6 +2,10 @@
 .trial-page .wrap { width: min(1600px, calc(100% - 32px)); }
 .trial-back-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; color: #f1f5f8; font-size: 15px; white-space: nowrap; }
 .trial-back-link:hover { text-decoration: underline; }
+.trial-maintenance { min-height: 65vh; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 48px 0; }
+.trial-maintenance h1 { margin: 8px 0 20px; font-size: 48px; line-height: 1.4; font-weight: 500; }
+.trial-maintenance > p:not(.eyebrow) { margin: 0 0 28px; color: #4b5b65; font-size: 18px; line-height: 1.9; }
+.trial-maintenance .button { max-width: 100%; }
 .trial-page-links { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 24px; padding-top: 20px; border-top: 1px solid #ced0cd; font-size: 14px; }
 .trial-page-links > a { display: inline-flex; align-items: center; min-height: 44px; color: #4b5b65; text-decoration: underline; text-underline-offset: 4px; }
 .cpu-trial { color: #101820; font-size: 16px; line-height: 1.5; scroll-margin-top: 100px; }

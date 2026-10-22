@@ -300,6 +300,13 @@ dd {
   transform: translateY(-2px);
 }
 
+.button:disabled {
+  background: transparent;
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .button-primary {
   background: var(--white);
   color: var(--bg);
@@ -990,6 +997,10 @@ dd {
   align-items: center;
   gap: 14px;
 }
+
+.play-status { color: var(--muted); }
+.play-status .play-status-label { margin: 0 0 12px; color: var(--paper-ink); font-size: 28px; font-weight: 500; }
+.play-status p:last-child { margin: 0; line-height: 1.8; }
 
 .external-play-link {
   gap: 10px;
